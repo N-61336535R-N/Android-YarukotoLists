@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/container"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".YarukotoList.YItemEditActivity">
+
+
+    <TextView
+        android:title="タイトル"
+        android:textSize="10sp"
+        android:textColor="#940d792d"
+        android:gravity="bottom|right"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/sTxtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="5dp"
+        android:hint="@string/hint_title"
+        android:textSize="23sp"
+        android:inputType="text" />
+
+
+    <TextView
+        android:title="概要"
+        android:textSize="10sp"
+        android:textColor="#940d792d"
+        android:gravity="bottom|right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/sTxtGaiyou"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp"
+        android:maxLines="3"
+        android:minLines="3"
+        android:hint="@string/hint_gaiyou"
+        android:textSize="16sp"
+        android:gravity="top|left" />
+
+
+    <TextView
+        android:title="詳細"
+        android:textSize="10sp"
+        android:textColor="#940d792d"
+        android:gravity="bottom|right"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/sTxtSyousai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp"
+        android:minLines="5"
+        android:hint="@string/hint_syousai"
+        android:textSize="14sp"
+        android:gravity="top|left" />
+
+</LinearLayout>

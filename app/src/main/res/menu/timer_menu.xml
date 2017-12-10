@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+
+    <!-- 追加 -->
+    <item
+        android:id="@+id/menu_add_list"
+        android:title="追加"
+        yourapp:showAsAction="always"/>
+
+    <!-- …の中身 -->
+    <!-- タイマーセット保存 -->
+    <item
+        android:id="@+id/menu_save_timer_set"
+        android:title="タイマーリスト保存"
+        yourapp:showAsAction="never"/>
+
+    <!-- 設定 -->
+    <item
+        android:id="@+id/action_settings"
+        android:title="設定"
+        yourapp:showAsAction="never"/>
+
+    <!-- 終了 -->
+    <item
+        android:id="@+id/system_exit"
+        android:title="終了"
+        yourapp:showAsAction="never"/>
+    
+    
+</menu>

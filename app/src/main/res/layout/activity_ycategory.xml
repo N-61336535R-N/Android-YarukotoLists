@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:gravity="center"
+    tools:context=".YarukotoList.YCategoryActivity">
+
+    <LinearLayout
+        android:id="@+id/frameLayout0"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="1dp"
+            android:layout_margin="1dp"
+            android:background="#caffffff"
+            android:gravity="center"
+            android:columnWidth="100dp"
+            android:minHeight="120dp"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="1dp"
+            android:stretchMode="columnWidth"
+            android:layout_weight="1"/>
+    
+        
+        <LinearLayout
+            android:id="@+id/frameLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+            
+            <Button
+                android:id="@+id/send_button"
+                android:text="タイマー予約へ"
+                android:textSize="20sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        layout="@layout/floating_action_button">
+    </include>
+    
+</FrameLayout>

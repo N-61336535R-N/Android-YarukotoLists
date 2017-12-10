@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="カテゴリー１">
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="switch_preference"
+            android:title="スイッチ" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="check_box_preference"
+            android:title="チェックボックス" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Backup">
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_text_preference"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="表示パターン" />
+    </PreferenceCategory>
+    
+</PreferenceScreen>

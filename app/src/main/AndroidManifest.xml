@@ -1,0 +1,68 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="ngrnm.syokuninn_sibou.yarukotolists">
+    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="やること・タイマー"
+        android:roundIcon="@drawable/app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="やることカテゴリ 一覧">
+            <intent-filter
+                android:label="やること・タイマー">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".YarukotoList.YCategoryActivity"
+            android:label="やることカテゴリ 一覧" >
+        </activity>
+        <activity
+            android:name=".YarukotoList.YListerActivity"
+            android:label="やることリスト 一覧" >
+        </activity>
+        <activity
+            android:name=".YarukotoList.YItemsActivity"
+            android:label="[リスト名]" >
+        </activity>
+        <activity
+            android:name=".YarukotoList.YItemShowActivity"
+            android:label="[項目名]">
+        </activity>
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".YarukotoList.YItemEditActivity"
+            android:label="[項目名] 編集">
+        </activity>
+        <activity
+            android:name=".Timer.TimerActivity"
+            android:label="タイマー" >
+        </activity>
+        <activity
+            android:name=".Timer.TimerSetActivity"
+            android:label="タイマー予約" >
+        </activity>
+        <activity
+            android:name=".Settings.SettingActivity"
+            android:label="設定" >
+        </activity>
+        <activity
+            android:name=".Settings.SettingMoldActivity"
+            android:label="[設定カテゴリ名]" >
+        </activity>
+        <activity
+            android:name=".Database.DatabaseEx"
+            android:label="データベースのテスト" >
+        </activity>
+    </application>
+    
+</manifest>
