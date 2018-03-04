@@ -17,9 +17,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 
 import ngrnm.syokuninn_sibou.yarukotolists.R;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.Timer.TimerActivity;
 import ngrnm.syokuninn_sibou.yarukotolists.Timer.TimerSetActivity;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.LibraryChecker;
 
 /**

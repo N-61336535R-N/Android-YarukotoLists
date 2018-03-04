@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ngrnm.syokuninn_sibou.yarukotolists.R;
-import ngrnm.syokuninn_sibou.yarukotolists.Settings.SettingActivity;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.SettingMoldActivity;
 
 /**
  * Created by ryo on 2017/10/02.
@@ -100,7 +100,7 @@ public abstract class YActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "設定", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(YActivity.this, SettingActivity.class);
+                Intent intent = new Intent(YActivity.this, SettingMoldActivity.class);
                 startActivity(intent);
                 return true;
         }

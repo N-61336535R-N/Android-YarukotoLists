@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils.Backuper;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.BackupUtils.Backuper;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils.DirSelectDialog;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils.DirSelectDialog.OnDirSelectDialogListener;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils.GuruguruDialog;
@@ -29,12 +29,21 @@ public class SettingFragment extends PreferenceFragmentCompat implements OnDirSe
     
     private OnFragmentInteractionListener mListener;
     
+    private static int posi = -1;
+    
+    public static SettingFragment getInstance(int position) {
+        SettingFragment sttgf = new SettingFragment();
+        posi = position;
+        return sttgf;
+    }
+    
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Load the preferences from an XML resource
-        setPreferencesFromResource(SettingConsts.setPref_xmls[SettingConsts.getPref_num()], rootKey);
+        setPreferencesFromResource(SettingConsts.setPref_xmls[posi], rootKey);
     
-        if (SettingConsts.getPref_num() == SettingConsts.KOUMOKU_num-1) {
+        if (posi == SettingConsts.setPref_xmls.length-1) {
+            System.out.println("とりあえず入ったことの確認");
             setBackupPath();
             setBackupButton();
         }
@@ -62,7 +71,7 @@ public class SettingFragment extends PreferenceFragmentCompat implements OnDirSe
                 SDFrag.setOnDirSelectDialogListener(SettingFragment.this);
     
                 // 表示
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
                 SDFrag.show(ft, "dialog");
                 return true;
             }
@@ -210,7 +219,7 @@ public class SettingFragment extends PreferenceFragmentCompat implements OnDirSe
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            //throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
     

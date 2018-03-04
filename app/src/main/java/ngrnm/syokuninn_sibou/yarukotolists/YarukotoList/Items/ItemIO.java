@@ -3,7 +3,7 @@ package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items;
 import java.io.File;
 import java.io.IOException;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Consts;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.DirFile;
 
 

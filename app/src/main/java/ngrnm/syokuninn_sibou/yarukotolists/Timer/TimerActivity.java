@@ -22,7 +22,7 @@ import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YListerActivity;
 public class TimerActivity extends AppCompatActivity {
     // タイマー
     private Button startButton, stopButton;
-    private TextView timerText;  // .setTitle("");した段階で、画面に表示される
+    private TextView timerText;  // .setLI_title("");した段階で、画面に表示される
     
     private static CountDown countDown;
     private static List<CountDown> countDownList;
@@ -33,11 +33,11 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timer);
+        setContentView(R.layout.fragment_ytimer);
         
         
         timerText = (TextView) findViewById(R.id.timer);
-        timerText.setText("2:00 s");
+        timerText.setText("0:35 s");
         
         
         // インスタンス生成
@@ -76,7 +76,7 @@ public class TimerActivity extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 countDown.cancel(); // タイマーをストップ
                 millisLeft = 15000; // カウントダウン時間を初期値にリセット
-                ((TextView)findViewById(R.id.textView)).setTitle(String.valueOf(millisLeft / 1000)); // テキストビューに初期値をセット
+                ((TextView)findViewById(R.id.textView)).setLI_title(String.valueOf(millisLeft / 1000)); // テキストビューに初期値をセット
                 ((ToggleButton)findViewById(R.id.toggleButton)).setChecked(false); // toggleボタンをオフにする
                 return true;
             }
@@ -88,6 +88,7 @@ public class TimerActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 変更の必要あり。
                 Intent intent = new Intent(getApplication(), YListerActivity.class);
                 startActivity(intent);
             }

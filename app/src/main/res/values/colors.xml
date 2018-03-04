@@ -3,4 +3,6 @@
     <color name="colorPrimary">#43a660</color>
     <color name="colorPrimaryDark">#43c77e</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="fab_icon_color">#64ddff</color>
+    <color name="fab_background_color">#6bf4fdff</color>
 </resources>

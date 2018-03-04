@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+// SQLite ラッパー Realm を使うために追加
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 26
@@ -7,7 +9,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -15,6 +17,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
@@ -34,4 +40,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:preference-v7:26.1.0'
     compile 'com.android.support:preference-v14:26.1.0'
+    // RealmRecyclerViewAdapter を使うために追加
+    compile 'io.realm:android-adapters:2.1.1'
+    
+    // Backup 時の JSON を使いやすくするために、Jackson を追加
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.4'
+    compile 'com.google.code.gson:gson:2.8.2'
 }

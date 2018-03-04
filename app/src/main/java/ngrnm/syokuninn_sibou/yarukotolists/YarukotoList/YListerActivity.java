@@ -9,13 +9,11 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Consts;
+import ngrnm.syokuninn_sibou.yarukotolists.R;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.LibraryChecker;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ImageArrayAdapter;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ViewData;
-import ngrnm.syokuninn_sibou.yarukotolists.R;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.*;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.*;
 
 /**
  *   ＜＜＜＜＜〜〜〜〜〜  やることリスト  〜〜〜〜〜＞＞＞＞＞
@@ -102,7 +100,7 @@ public class YListerActivity extends YLibraryActivity {
         // adapterの準備
         list = makeListView();
         // adapterのインスタンスを作成
-        adapter = new ImageArrayAdapter(this, R.layout.list_image_item, list);
+//        adapter = new ImageArrayAdapter(this, R.layout.list_image_item, list);
         
         lV = (ListView) findViewById(R.id.listview);
         lV.setAdapter(adapter);

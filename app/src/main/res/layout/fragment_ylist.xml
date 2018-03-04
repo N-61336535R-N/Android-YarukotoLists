@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:id="@+id/frameLayout0"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        
+        <ListView 
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_weight="1" >
+        </ListView>
+        
+    </LinearLayout>
+
+
+
+    <!-- fabをタップした時有効にする背景 -->
+    <View
+        android:id="@+id/fab_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fab_background_color"
+        android:visibility="gone"/>
+
+    <!-- fabのテキストとボタンをまとめたレイアウト 
+    <LinearLayout
+        android:id="@+id/fab_camera_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/camera_text"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:text="@string/list_camera_title"
+            android:textColor="@color/fab_icon_color"
+            android:textSize="20dp"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/fab_camera"
+            app:backgroundTint="@color/fab_icon_color"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fab_compass_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/compass_text"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:text="@string/list_compass_title"
+            android:textColor="@color/fab_icon_color"
+            android:textSize="20dp"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_compass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/fab_compass"
+            app:backgroundTint="@color/fab_icon_color"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fab_noise_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/noise_text"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/list_noise_title"
+            android:textColor="@color/fab_icon_color"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_noise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/fab_noise"
+            app:backgroundTint="@color/fab_icon_color"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fab_speed_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/speed_text"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/list_communication_title"
+            android:textColor="@color/fab_icon_color"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/fab_speed"
+            app:backgroundTint="@color/fab_icon_color"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fab_memo_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/memo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/list_memo_title"
+            android:textColor="@color/fab_icon_color"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_memo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/fab_memo"
+            app:backgroundTint="@color/fab_icon_color"/>
+    </LinearLayout>
+-->
+    <!-- 最前面に表示するfab -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/ic_note_add_white_24dp"
+        app:backgroundTint="@color/fab_icon_color"/>
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,31 +11,34 @@ import android.widget.Toast;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.History;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.ItemIO;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.ItemsChecker;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.urdo_TW;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Consts;
+import io.realm.Realm;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.History;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.urdo_TW;
 
 
 /**
  * ＜＜＜＜＜〜〜〜〜〜  やることリストの内容(Item)の編集画面  〜〜〜〜〜＞＞＞＞＞
+ * 
+ * いずれは Fragment にして、ダイアログっぽい感じにする予定。
+ * 
  */
-
-
 public class YItemEditActivity extends AppCompatActivity {
+    Realm realm;
+    // Item の ID
+    int itemID;
     /** 選択した項目の内容の一時保管場所
      *  [0] タイトル
      *  [1] 概要
-     *  [2] 詳細メモ    */
+     *  [2] 詳細メモ
+     */
     private static final int Item_num = Consts.Item_num;
-    private static String[] edit_latest = new String[Item_num];
     
     private EditText[] ET = new EditText[Item_num];
     
     private static Deque<History> ItemCs_after = new ArrayDeque<>();  //「進む」の格納場所
-    
     
     
     /** Called when the activity is first created. */
@@ -56,16 +60,21 @@ public class YItemEditActivity extends AppCompatActivity {
          *      → 古いデータは削除（履歴の数は [設定] 可能にする。デフォルト10）
          * ○ 戻る・進むで
          * */
-        ItemIO.check();
-        // 項目ファイルの中身を取得
-        edit_latest = ItemIO.readAllItem();
+        // bundle から realm の item id を取得。
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        itemID = bundle.getInt("itemID");
     
-        ET[0] = (EditText)findViewById(R.id.eTxtTitle);
-        ET[1] = (EditText)findViewById(R.id.eTxtGaiyou);
-        ET[2] = (EditText)findViewById(R.id.eTxtSyousai);
+        // このスレッドのためのRealmインスタンスを取得
+        realm = Realm.getDefaultInstance();
+        YItem yItem = realm.where(YItem.class).equalTo("id", itemID).findFirst();
+        String[] kindList = {yItem.getTitle(), yItem.getTxtGaiyou(), yItem.getTxtSyousai()};
+        
+        int[] vidList = {R.id.eTxtTitle, R.id.eTxtGaiyou, R.id.eTxtSyousai};
     
         for (int i=0; i<Item_num; i++){
-            ET[i].setText(edit_latest[i]);
+            ET[i] = (EditText)findViewById(vidList[i]);
+            ET[i].setText(kindList[i]);
             ET[i].addTextChangedListener(new urdo_TW(i));
         }
         urdo_TW.allow_push = true;
@@ -106,10 +115,29 @@ public class YItemEditActivity extends AppCompatActivity {
     }
     
     private void saveButtonClick() {
-        // 保存
-        ItemIO.updateItem(new String[]{ET[0].getText().toString(), ET[1].getText().toString(), ET[2].getText().toString()});
+        /* 入力されたデータを保存 */
+        YItem yitem = realm.where(YItem.class).equalTo("id", itemID).findFirst();
+        realm.beginTransaction();
+        yitem.setTitle(ET[0].getText().toString());
+        yitem.setTxtGaiyou(ET[1].getText().toString());
+        yitem.setTxtSyousai(ET[2].getText().toString());
+        realm.commitTransaction();
     }
     
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 戻るボタンが押されたら、保存し、ItemsChecker を再度実行して再読み込みする。
+        saveButtonClick();
+        //ItC.check();
+        Toast.makeText(this, "保存しました", Toast.LENGTH_SHORT).show();
+    }
+
+    
+    /**
+     * 【未】戻る・進むボタン
+     */
     private void undoButtonClick() {
         // 読み込み
         urdo_TW.allow_push = false;
@@ -132,17 +160,9 @@ public class YItemEditActivity extends AppCompatActivity {
     }
     
     
-    /**
-     * 適当に追加！！
-     */
-    private ItemsChecker ItC = new ItemsChecker("aaa");
-    
     @Override
-    protected void onPause() {
-        super.onPause();
-        // 戻るボタンが押されたら、保存し、ItemsChecker を再度実行して再読み込みする。
-        saveButtonClick();
-        ItC.check();
-        Toast.makeText(this, "保存しました", Toast.LENGTH_SHORT).show();
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close(); // Remember to close Realm when done.
     }
 }

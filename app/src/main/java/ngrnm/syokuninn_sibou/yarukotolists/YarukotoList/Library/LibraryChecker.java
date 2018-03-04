@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Checker;
 
 /**

@@ -8,24 +8,21 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
-        android:label="やること・タイマー"
         android:roundIcon="@drawable/app_icon"
+        android:label="やること・タイマー"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
             android:name=".MainActivity"
-            android:label="やることカテゴリ 一覧">
+            android:label="やること Manager">
             <intent-filter
                 android:label="やること・タイマー">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".YarukotoList.YCategoryActivity"
-            android:label="やることカテゴリ 一覧" >
-        </activity>
+        <activity android:name=".YarukotoMainActivity"/>
         <activity
             android:name=".YarukotoList.YListerActivity"
             android:label="やることリスト 一覧" >
@@ -52,16 +49,9 @@
             android:label="タイマー予約" >
         </activity>
         <activity
-            android:name=".Settings.SettingActivity"
-            android:label="設定" >
-        </activity>
-        <activity
             android:name=".Settings.SettingMoldActivity"
-            android:label="[設定カテゴリ名]" >
-        </activity>
-        <activity
-            android:name=".Database.DatabaseEx"
-            android:label="データベースのテスト" >
+            android:theme="@style/SettingsTheme"
+            android:label="設定" >
         </activity>
     </application>
     

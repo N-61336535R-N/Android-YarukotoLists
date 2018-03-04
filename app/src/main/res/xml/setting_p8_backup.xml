@@ -2,19 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="Backup設定">
-        <SwitchPreferenceCompat
-            android:title="バックアップオプションのスイッチ"
-            android:defaultValue="false"
-            android:key="switch_preference" />
-        <CheckBoxPreference
-            android:title="バックアップオプションのチェックボックス"
-            android:defaultValue="false"
-            android:key="check_box_preference" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Backup">
         <PreferenceScreen
-            android:title="バックアップ先"
+            android:title="バックアップ保存先"
             android:key="prefKey_BackupPath"
             android:selectAllOnFocus="true" />
         <PreferenceScreen
@@ -22,11 +14,19 @@
             android:summary="↑で指定したパスに「BackupYLibrarys.zip」\nを作成します。"
             android:key="prefKey_goBackup">
         </PreferenceScreen>
-        <intent android:action="android.intent.action.VIEW"
-                android:targetPackage="yarukotolist_and_timer.Timer"
-                android:targetClass="yarukotolist_and_timer.Timer.TimerActivity" />
     </PreferenceCategory>
-    
+
+    <PreferenceCategory android:title="復元">
+        <PreferenceScreen
+            android:title="バックアップファイル (zip) の場所"
+            android:key="prefKey_RestorePath"
+            android:selectAllOnFocus="true" />
+        <PreferenceScreen
+            android:title="バックアップを実行"
+            android:summary="↑で指定したパスに「BackupYLibrarys.zip」\nを作成します。"
+            android:key="prefKey_goRestore">
+        </PreferenceScreen>
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

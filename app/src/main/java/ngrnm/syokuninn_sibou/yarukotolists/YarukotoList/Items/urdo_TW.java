@@ -6,7 +6,7 @@ import android.text.TextWatcher;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Consts;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 
 /**
  * Created by M.R on 2017/06/25.

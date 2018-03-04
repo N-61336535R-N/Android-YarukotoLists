@@ -10,6 +10,8 @@ public class SettingConsts {
     
     private SettingConsts(){}
     
+    
+    /* 設定画面のデザインもろもろ */
     // 設定 のカテゴリ一覧
     static final String[] scenes = {
             // Scenes of Isle of Wight
@@ -17,28 +19,17 @@ public class SettingConsts {
             "構造",
             "バックアップ"
     };
-    
-    // ちょっと冗長的ですが分かり易くするために
+    // アイコン一覧
     static final int[] icons = {
             R.drawable.ic_build_black_24dp,
             R.drawable.ic_build_black_24dp,
             R.drawable.ic_build_black_24dp,
     };
-    
     // preference.xml の一覧
     static final int[] setPref_xmls = {
             R.xml.setting_p1_hyouzi,
             R.xml.setting_p2_kouzou,
             R.xml.setting_p8_backup,
     };
-    
-    private static int pref_num;
-    public static int getPref_num() {
-        return pref_num;
-    }
-    public static void setPref_num(int pref_num) {
-        SettingConsts.pref_num = pref_num;
-    }
-    public static final int KOUMOKU_num = scenes.length;
     
 }

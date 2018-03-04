@@ -1,12 +1,5 @@
 package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,6 +7,13 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 
@@ -107,12 +107,8 @@ public class DirSelectDialog extends DialogFragment implements OnClickListener {
         });
         
         dialog.setNegativeButton("キャンセル", new OnClickListener() {
-            
             @Override
-            public void onClick(DialogInterface dialog, int value) {
-                
-                DirSelectDialog.this.listener.onClickDirSelect(null);
-            }
+            public void onClick(DialogInterface dialog, int value) {}
         });
         
         return dialog.create();
