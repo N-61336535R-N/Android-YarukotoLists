@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils;
+package ngrnm.syokuninn_sibou.yarukotolists.Utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

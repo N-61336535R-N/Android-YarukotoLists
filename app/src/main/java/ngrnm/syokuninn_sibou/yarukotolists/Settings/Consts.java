@@ -2,7 +2,10 @@ package ngrnm.syokuninn_sibou.yarukotolists.Settings;
 
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.LinkedList;
 
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCtgryOrder;
@@ -11,7 +14,15 @@ public class Consts {
     private Consts() {}
     
     public static final String realmDBname = "YDB.realm";
-    public static final Class[] realmClasses = {YCategory.class, YCtgryOrder.class};
+    public static final Class[] realmClasses = {YCategory.class};
+    public static final Class[] realmOrderClasses = {YCtgryOrder.class};
+    public static ArrayList<Class> realmAllClasses = new ArrayList<>();
+    static {
+        LinkedList<Class> tmpList = new LinkedList<>();
+        tmpList.addAll(Arrays.asList(realmClasses));
+        tmpList.addAll(Arrays.asList(realmOrderClasses));
+        realmAllClasses.addAll(tmpList);
+    }
     
     public static final int LIMIT_Category = 9;
     public static final int LIMIT_Lists = 9;

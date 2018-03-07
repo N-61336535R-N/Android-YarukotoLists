@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:listViewStyle">@style/ListView</item>
+    </style>
+    <style name="ListView" parent="@android:style/Widget.Holo.Light.ListView">
+        <item name="android:divider">@null</item>
+    </style>
+
+</resources>

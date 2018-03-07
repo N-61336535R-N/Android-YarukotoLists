@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils;
+package ngrnm.syokuninn_sibou.yarukotolists.Utils.DirPicker;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,8 +22,6 @@ import ngrnm.syokuninn_sibou.yarukotolists.R;
  * ディレクトリ選択ダイアログ
  */
 public class DirSelectDialog extends DialogFragment implements OnClickListener {
-    
-    Bundle bundleSDir;
     
     /** リスナー */
     private OnDirSelectDialogListener listener = null;
@@ -62,13 +60,13 @@ public class DirSelectDialog extends DialogFragment implements OnClickListener {
     
     /**
      * ダイアログを表示
-     *
      *  dirPath : ディレクトリのパス
      */
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        bundleSDir = savedInstanceState;
-        final String dirPath = getArguments().getString("dirPath");
+    public Dialog onCreateDialog(Bundle bundleSDir) {
+        String dPath = getArguments().getString("dirPath");
+        if (new File(dPath).isFile()) dPath = new File(dPath).getParent();
+        final String dirPath = dPath;
         
         // ダイアログを生成
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
@@ -77,29 +75,21 @@ public class DirSelectDialog extends DialogFragment implements OnClickListener {
         dialog.setItems(getFList(dirPath).toArray(new String[0]), this);
         
         dialog.setPositiveButton("決 定", new OnClickListener() {
-            
             @Override
             public void onClick(DialogInterface dialog, int value) {
-                
                 DirSelectDialog.this.listener.onClickDirSelect(dirPath);
             }
         });
         
         dialog.setNeutralButton("上 へ", new OnClickListener() {
-            
             @Override
             public void onClick(DialogInterface dialog, int value) {
-                
                 if (!"/".equals(dirPath)) {
-                    
                     String dirPathNew = dirPath.substring(0, dirPath.length() - 1);
                     dirPathNew = dirPathNew.substring(0, dirPathNew.lastIndexOf("/") + 1);
-                    
                     // 1つ上へ
                     show(dirPathNew);
-                    
                 } else {
-                    
                     // 現状維持
                     show(dirPath);
                 }
@@ -121,32 +111,26 @@ public class DirSelectDialog extends DialogFragment implements OnClickListener {
     
         // ファイルリスト
         File[] fileArray = this.fileData.listFiles();
-    
         // 名前リスト
         List<String> nameList = new ArrayList<String>();
     
         if (fileArray != null) {
-        
             // ファイル情報マップ
             Map<String, File> map = new HashMap<String, File>();
         
             for (File file : fileArray) {
-            
                 if (file.isDirectory()) {
-                
                     nameList.add(file.getName() + "/");
                     map.put(nameList.get(map.size()), file);
                 }
             }
         
             // ソート
-            Collections.sort(nameList);
+            Collections.sort(nameList, String::compareToIgnoreCase);
         
             // ファイル情報リスト
             this.viewFileDataList = new ArrayList<File>();
-        
             for (int i = 0; i < nameList.size(); i++) {
-            
                 this.viewFileDataList.add(map.get(nameList.get(i)));
             }
         }
@@ -156,22 +140,16 @@ public class DirSelectDialog extends DialogFragment implements OnClickListener {
     
     /**
      * リスナーを設定
-     *
      * @param listener 選択イベントリスナー
      */
     public void setOnDirSelectDialogListener(OnDirSelectDialogListener listener) {
-        
         this.listener = listener;
     }
     
-    /**
-     * ボタン押下インターフェース
-     */
+    /** ボタン押下インターフェース */
     public interface OnDirSelectDialogListener {
-        
         /**
          * 選択イベント
-         *
          * @param filePath ファイル
          */
         public void onClickDirSelect(String filePath);

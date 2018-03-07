@@ -6,6 +6,7 @@ import net.lingala.zip4j.util.Zip4jConstants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.zip.ZipFile;
 
 public class ZipCompressUtils {
     
+    public ZipCompressUtils() {}
     /**
      * ファイルとフォルダを圧縮する
      * @param entrys 圧縮するFile, Directory のリスト。File.Filelist()
@@ -42,28 +44,37 @@ public class ZipCompressUtils {
     
     
     
-    public InputStream getZipFileInputStream(String zipFPath, String targetFName) throws FileNotFoundException {
-        InputStream in = null;
-        
+    ZipFile zipFile;
+    public ZipCompressUtils(String zipFPath) {
         try{
-            ZipFile zipFile = new ZipFile( zipFPath );
-            Enumeration<? extends ZipEntry> enume  =  zipFile.entries();
-            while( enume.hasMoreElements() ){
-                ZipEntry entry = enume.nextElement();
-                if ( entry.getName().equals(targetFName) ) {
-                    in = zipFile.getInputStream(entry);
-                    break;
-                }
-            }
-            zipFile.close();
+            this.zipFile = new ZipFile( zipFPath );
         }catch( Exception ex ) {
             //err = -1;
             //Log.d( "Err", "// ZipIO : getList err... //" );
             ex.printStackTrace();
         }
-        
-        if ( in == null )  throw new FileNotFoundException("zip ファイル内を探しましたが、対象のファイルは見つかりませんでした。");
+    }
+    public InputStream getZipFileInputStream(String targetFName) throws FileNotFoundException {
+        InputStream in = null;
+        System.out.println("targetFName : "+targetFName);
+        Enumeration<? extends ZipEntry> enume  =  zipFile.entries();
+        while( enume.hasMoreElements() ){
+            ZipEntry entry = enume.nextElement();
+            System.out.println("entry.getName() : "+entry.getName());
+            if ( entry.getName().equals(targetFName) ) {
+                try {
+                    in = zipFile.getInputStream(entry);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     
+        if ( in == null )  throw new FileNotFoundException("zip ファイル内を探しましたが、対象のファイルは見つかりませんでした。");
         return in;
+    }
+    public void close() throws IOException {
+        zipFile.close();
     }
 }

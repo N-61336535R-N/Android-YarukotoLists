@@ -17,8 +17,8 @@ import io.realm.Realm;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.SettingMoldActivity;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils.DeleteDialog;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils.EditDialog;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.DeleteDialog;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.EditDialog;
 
 /**
  * Created by ryo on 2018/02/26.

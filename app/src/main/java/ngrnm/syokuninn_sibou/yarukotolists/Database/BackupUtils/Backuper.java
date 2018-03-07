@@ -92,24 +92,22 @@ public class Backuper {
             e.printStackTrace();
         }
     
-        for (Class realmCass : Consts.realmClasses) {
-            RealmResults rresults = realm.where(realmCass).findAll();
+        try {
+            for (Class realmCass : Consts.realmAllClasses) {
+                RealmResults rresults = realm.where(realmCass).findAll();
     
-            try {
                 FileWriter fw = new FileWriter(backupTmpDir.getPath() +"/"+ realmCass.getName() + ".json", true);
                 BufferedWriter bw = new BufferedWriter(fw);
     
-                for (Object robj : rresults) {
-                    String testJsonString = gson.toJson(robj);
-                    bw.write(testJsonString);
-                }
+                String testJsonString = gson.toJson(rresults);
+                bw.write(testJsonString);
     
                 bw.close();
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
             }
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
         }
-        
+
     /*
         //YCtgryOrder yctgO = realm.where(YCtgryOrder.class).findFirst();
         testJSON tJSON = new testJSON();

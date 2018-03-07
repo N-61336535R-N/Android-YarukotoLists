@@ -46,11 +46,11 @@ public class YCtgryOrder extends RealmObject {
     
     public void initYO_C(Realm realm) {
         RealmResults<YCategory> yctgs = realm.where(YCategory.class).findAll();
-        if (yctgs.size() != yctgOrder_Custom.size()) {
+        if (yctgs.size() > yctgOrder_Custom.size()) {
             realm.beginTransaction();
-            yctgOrder_Custom.clear();
+            //yctgOrder_Custom.clear();
             for (YCategory yctg : yctgs) {
-                yctgOrder_Custom.add(yctg.getId());
+                if (!yctgOrder_Custom.contains(yctg.getId())) yctgOrder_Custom.add(yctg.getId());
             }
             realm.commitTransaction();
         }
@@ -58,9 +58,10 @@ public class YCtgryOrder extends RealmObject {
     public void initYO(Realm realm) {
         initYO_C(realm);
         realm.beginTransaction();
-        if (orderKind.equals("custom"))
-        yctgOrder.clear();
-        yctgOrder.addAll(yctgOrder_Custom);
+        if (orderKind.equals("custom")) {
+            yctgOrder.clear();
+            yctgOrder.addAll(yctgOrder_Custom);
+        }
         realm.commitTransaction();
     }
     

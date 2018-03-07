@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Utils;
+package ngrnm.syokuninn_sibou.yarukotolists.Utils;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

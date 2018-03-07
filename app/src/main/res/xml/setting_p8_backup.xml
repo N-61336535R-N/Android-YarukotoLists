@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Backup設定">
-    </PreferenceCategory>
+    <!-- PreferenceCategory android:title="Backup設定">
+    </PreferenceCategory-->
     
     <PreferenceCategory android:title="Backup">
         <PreferenceScreen
-            android:title="バックアップ保存先"
+            android:title="Backup 保存先"
             android:key="prefKey_BackupPath"
             android:selectAllOnFocus="true" />
         <PreferenceScreen
-            android:title="バックアップを実行"
-            android:summary="↑で指定したパスに「BackupYLibrarys.zip」\nを作成します。"
-            android:key="prefKey_goBackup">
-        </PreferenceScreen>
+            android:title="バックアップ実行"
+            android:summary="↑で指定したパスに「BackupYDB.zip」\nを作成します。"
+            android:key="prefKey_goBackup"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="復元">
+    <PreferenceCategory android:title="復元・Import">
+        <ListPreference
+            android:title="復元モード"
+            android:summary="：インポート（追加）"
+            android:entries="@array/entries_list_preference"
+            android:entryValues="@array/entryvalues_list_preference"
+            android:defaultValue="json-skip"
+            android:dialogTitle="ListPreference"
+            android:key="prefkey_selectlist_restore_mode"/>
         <PreferenceScreen
-            android:title="バックアップファイル (zip) の場所"
-            android:key="prefKey_RestorePath"
-            android:selectAllOnFocus="true" />
-        <PreferenceScreen
-            android:title="バックアップを実行"
-            android:summary="↑で指定したパスに「BackupYLibrarys.zip」\nを作成します。"
-            android:key="prefKey_goRestore">
-        </PreferenceScreen>
+            android:title="インポート実行"
+            android:summary="インポートしたい zip ファイルを選択後、\n復元を実行します。"
+            android:key="prefKey_goRestore"/>
     </PreferenceCategory>
-
 
 </PreferenceScreen>
