@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import java.util.LinkedList;
 
-import de.timroes.android.listview.EnhancedListView;
+//import de.timroes.android.listview.EnhancedListView;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.ItemsChecker;
@@ -31,13 +31,14 @@ import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.YActivity;
  * のファイルを各々作る。
  */
 
-public class YItemsActivity extends YActivity {
+public class YItemsActivity// extends YActivity 
+{
     private static final String kind = "Item";
     
     private ItemsChecker ItC;
     private ItemsChecker FItC;
     
-    @Override
+//    @Override
     protected Checker getLibC() {
         return ItC;
     }
@@ -49,7 +50,7 @@ public class YItemsActivity extends YActivity {
     /** 起動を早くするために、一度項目を取得したリストは一定期間保持し続けるスタイルに
      → 取得するときに、保持リストの総数が規定値を超えたら、一番古いリストを破棄する。
      */
-    // リストビュー
+/*    // リストビュー
     private EnhancedListView mListView;
     // リストビューに設定するリストとアダプター
     private LinkedList<String> mItemList;
@@ -80,7 +81,7 @@ public class YItemsActivity extends YActivity {
                 ListView listView = (ListView)parent;
                 //String item = (String)listView.getItemAtPosition(pos);
                 //Toast.makeText(YItemsActivity.this, item, Toast.LENGTH_LONG).show();
-                /**(未)
+*/                /**(未)
                  * 次のintentに移動
                  * [実験] Preference.java に飛ぶ
                  * [実装] 項目の編集画面に飛ぶ
@@ -93,19 +94,19 @@ public class YItemsActivity extends YActivity {
                  *      ○ 各種時間
                  *      を読み込んで、編集できるようにする。
                  */
-                Consts.ItemNumber = pos;
+/*                Consts.ItemNumber = pos;
                 // やることリスト（編集）画面に移動
                 Intent intent = new Intent(YItemsActivity.this, YItemEditActivity.class);
                 startActivity(intent);
             }
         });
         
-        /* スワイプで 終了リストに移動する 設定
+*/        /* スワイプで 終了リストに移動する 設定
           *  追加削除をその都度やっていたら 負担が大きいので、
           *  追加削除を一旦、リスト内で"仮想的に"行う。
           *  ファイルを更新は画面遷移するタイミングで。
         */
-        mListView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+/*        mListView.setDismissCallback(new EnhancedListView.OnDismissCallback() {
             @Override
             public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
                 
@@ -158,6 +159,6 @@ public class YItemsActivity extends YActivity {
         ItC.ReflectUpdate();
     }
     
-    
+    */
 }
 

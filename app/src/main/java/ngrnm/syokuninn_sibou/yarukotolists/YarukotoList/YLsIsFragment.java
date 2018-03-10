@@ -114,7 +114,7 @@ public class YLsIsFragment extends YLIsBasePageFragment {
         registerForContextMenu(lV);
     
     
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+/*        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //adapter = new RecyclerViewAdapter();
@@ -138,6 +138,8 @@ public class YLsIsFragment extends YLIsBasePageFragment {
                     }
                 });
         itemDecor.attachToRecyclerView(recyclerView);
+*/
+        
         // FloatingActionButton（↘︎のタイマーアイコン）
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add);
         fab.setOnClickListener(view_ -> {

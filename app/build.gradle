@@ -35,7 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //  ↓↓ この行追加(EnhancedListViewというライブラリ)
-    compile 'de.timroes.android:EnhancedListView:0.3.4'
+    //compile 'de.timroes.android:EnhancedListView:0.3.4'
     // RecyclerView ItemTouchHelper というLibraryを追加
     compile 'com.android.support:recyclerview-v7:26.1.0'
     
