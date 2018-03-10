@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:padding="20dp"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:context=".Timer.TimerActivity">
+    android:gravity="center">
 
     <TextView
         android:id="@+id/timer"
@@ -16,7 +15,8 @@
         android:textColor="#73bf03"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:focusable="true"/>
 
     <ToggleButton
         android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
     
     <Button
         android:id="@+id/send_button"
-        android:text="やることリストへ"
+        android:text="ボタン（役割未定）"
         android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

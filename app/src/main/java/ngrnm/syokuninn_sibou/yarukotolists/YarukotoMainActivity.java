@@ -37,16 +37,12 @@ public class YarukotoMainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         adapter = new YarukotoFragmentPagerAdapter(manager);
         viewPager.setAdapter(adapter);
+        // ページ移動した時に初期化されると、リストの開いてたページが戻ってしまう...。
         viewPager.setOffscreenPageLimit(3);
         
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
     }
-    
-    
-    
-    
-    
     
     
     /**
@@ -76,4 +72,5 @@ public class YarukotoMainActivity extends AppCompatActivity {
             finishAndRemoveTask();
         super.onRestart();
     }
+    
 }

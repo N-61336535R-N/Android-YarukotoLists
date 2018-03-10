@@ -1,14 +1,14 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem;
 
 import android.widget.GridView;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Grids.GridAdapter;
+import ngrnm.syokuninn_sibou.yarukotolists.YListItem.Adapter.GridAdapter;
 
 /**
  * Created by ryo on 2018/02/19.
  */
 
-public class YCategoryFragment //extends YLIsBasePageFragment 
+public class YLI_GridViewFragment //extends YLI_BaseFragment 
 {
     // gridView 関連
     private GridAdapter adapter;
@@ -33,7 +33,7 @@ public class YCategoryFragment //extends YLIsBasePageFragment
                 // やることリスト（編集）画面に移動
                 final YList yl = ((YCategory) adapter.getItem(posi)).getHaveList(realm);
                 FragmentTransaction cft = getParentFragment().getChildFragmentManager().beginTransaction();
-                YLsIsFragment yLsIs = YLsIsFragment.newInstance(yl.getId(), 1);
+                YLI_RecyclerViewFragment yLsIs = YLI_RecyclerViewFragment.newInstance(yl.getId(), 1);
                 
                 cft.addToBackStack(null);  // 戻るボタンで戻ってこれるように
                 cft.replace(R.id.y_screen, yLsIs);

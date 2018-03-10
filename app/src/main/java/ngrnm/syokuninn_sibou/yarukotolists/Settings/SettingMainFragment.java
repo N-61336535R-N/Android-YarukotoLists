@@ -53,7 +53,7 @@ public class SettingMainFragment extends Fragment {
         
         
         /* リストビュー */
-        adapter = new SettingActivityListVAdapter(getContext(), R.layout.setting_list, scenes, icons);
+        adapter = new SettingActivityListVAdapter(getContext(), R.layout.item_setting_list, scenes, icons);
         lV = (ListView) view.findViewById(R.id.list_view);
         
         // 今のところ、設定は preference に保存でいく予定。後々 realm に移行するかも？

@@ -12,4 +12,8 @@ public class SysOutPrintln {
             System.out.println(obj.toString());
         }
     }
+    
+    public static final void printMark(String message) {
+        System.out.println(message);
+    }
 }

@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +23,13 @@ import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YLIsBasePageFragment;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ImageArrayAdapter;
+import ngrnm.syokuninn_sibou.yarukotolists.YListItem.Adapter.ImageArrayAdapter;
 
 /**
  * Created by ryo on 2018/02/23.
  */
 
-public class YLsIsFragment extends YLIsBasePageFragment {
+public class YLI_RecyclerViewFragment extends YLI_BaseFragment {
     private int parentYL_id;
     
     /* 画面のセッティング */
@@ -41,8 +37,8 @@ public class YLsIsFragment extends YLIsBasePageFragment {
     private ListView lV;
     
     
-    public static YLsIsFragment newInstance(int listId, int hierarchy) {
-        YLsIsFragment yLsIs = new YLsIsFragment();
+    public static YLI_RecyclerViewFragment newInstance(int listId, int hierarchy) {
+        YLI_RecyclerViewFragment yLsIs = new YLI_RecyclerViewFragment();
         // List のID を渡す。
         Bundle bundle = new Bundle();
         bundle.putInt("listID", listId);
@@ -51,6 +47,10 @@ public class YLsIsFragment extends YLIsBasePageFragment {
         return yLsIs;
     }
     
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
@@ -91,8 +91,8 @@ public class YLsIsFragment extends YLIsBasePageFragment {
                     // やることリスト（編集）画面に移動
                     FragmentTransaction cft
                             = getParentFragment().getChildFragmentManager().beginTransaction();
-                    YLsIsFragment yLsIs
-                            = YLsIsFragment.newInstance(yLI_id, getArguments().getInt("hierarchy_num")+1);
+                    YLI_RecyclerViewFragment yLsIs
+                            = YLI_RecyclerViewFragment.newInstance(yLI_id, getArguments().getInt("hierarchy_num")+1);
                     cft.replace(R.id.y_screen, yLsIs);
                     // 戻るボタンで戻ってこれるように
                     cft.addToBackStack(null);
@@ -171,7 +171,7 @@ public class YLsIsFragment extends YLIsBasePageFragment {
         final YList parentYList = realm.where(YList.class).equalTo("id", parentYL_id).findFirst();
         // adapterのインスタンスを作成
         parentYList.initOrder(realm);
-        adapter = new ImageArrayAdapter(getContext(), R.layout.list_image_item, parentYList.getO_list(), realm);
+        adapter = new ImageArrayAdapter(getContext(), R.layout.item_listview, parentYList.getO_list(), realm);
         lV.setAdapter(adapter);
     }
     

@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem.Items;
 
 import android.text.Editable;
 import android.text.TextWatcher;

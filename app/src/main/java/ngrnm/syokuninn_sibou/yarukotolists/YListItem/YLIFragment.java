@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,16 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YLsIsFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.R;
 
 
 /**
  * やること～ のリスト関係を編集するタブ
+ * 
+ * YList, YItem のFragment表示の管理を行う。
  */
-public class YFragment extends Fragment {
+public class YLIFragment extends Fragment {
     
-    public static YFragment newInstance() {
-        YFragment frag = new YFragment();
+    public static YLIFragment newInstance() {
+        YLIFragment frag = new YLIFragment();
         return frag;
     }
     
@@ -38,7 +40,7 @@ public class YFragment extends Fragment {
     /*
         final FragmentManager cfm = getChildFragmentManager();
         FragmentTransaction transaction = cfm.beginTransaction();
-        Fragment ycateg_frag = new YCategoryFragment();
+        Fragment ycateg_frag = new YLI_GridViewFragment();
         transaction.add(R.id.y_screen, ycateg_frag, "category");
         transaction.commit();
     */
@@ -46,7 +48,7 @@ public class YFragment extends Fragment {
         FragmentTransaction transaction = cfm.beginTransaction();
     
         // やることリスト（編集）画面に移動
-        YLsIsFragment yLsIs = YLsIsFragment.newInstance(0, 1);
+        YLI_RecyclerViewFragment yLsIs = YLI_RecyclerViewFragment.newInstance(0, 1);
         
         transaction.add(R.id.y_screen, yLsIs, "root");
         transaction.commit();

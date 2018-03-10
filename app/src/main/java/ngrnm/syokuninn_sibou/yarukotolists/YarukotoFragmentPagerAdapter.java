@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import ngrnm.syokuninn_sibou.yarukotolists.Schedule.YScheduleFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.Timer.YTimerFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.YListItem.YLIFragment;
 
 /**
  * Created by ryo on 2018/02/19.
@@ -36,7 +38,7 @@ public class YarukotoFragmentPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 if (homeFragment == null || homeFragment.getChildFragmentManager().getBackStackEntryCount() == 0) {
                     if (homeFragment != null) System.out.println("getBackStackEntryCount  :  "+homeFragment.getChildFragmentManager().getBackStackEntryCount());
-                    homeFragment = YFragment.newInstance();
+                    homeFragment = YLIFragment.newInstance();
                     return homeFragment;
                 } else return homeFragment;
             case 1:
@@ -52,8 +54,10 @@ public class YarukotoFragmentPagerAdapter extends FragmentPagerAdapter {
         return 3;
     }
     
+    
+    private final String[] tabTitle = {"リスト", "スケジュール", "タイマー"};
     @Override
     public CharSequence getPageTitle(int position) {
-        return "ページ" + (position + 1);
+        return tabTitle[position];
     }
 }

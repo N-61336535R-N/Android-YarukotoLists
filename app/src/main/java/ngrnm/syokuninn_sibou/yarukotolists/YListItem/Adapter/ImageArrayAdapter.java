@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem.Adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;

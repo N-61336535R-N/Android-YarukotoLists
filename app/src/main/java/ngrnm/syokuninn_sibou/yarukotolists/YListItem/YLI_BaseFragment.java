@@ -1,8 +1,9 @@
-package ngrnm.syokuninn_sibou.yarukotolists;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +16,9 @@ import android.widget.Toast;
 
 import io.realm.Realm;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI_Wrapper;
+import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.SettingMoldActivity;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.DebugUtils.SysOutPrintln;
 import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.DeleteDialog;
 import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.EditDialog;
 
@@ -23,7 +26,7 @@ import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.EditDialog;
  * Created by ryo on 2018/02/26.
  */
 
-public abstract class YLIsBasePageFragment extends Fragment {
+public abstract class YLI_BaseFragment extends Fragment {
     // 今のところ、これで問題なさそう。
     protected Realm realm = null;
     
@@ -43,7 +46,8 @@ public abstract class YLIsBasePageFragment extends Fragment {
     
     
     
-    /* リスト長押しの処理（コンテキストメニュー） */
+    //-- リスト長押しの処理（コンテキストメニュー） --//
+    // list にコンテキストメニューを作成するとき呼ばれる。
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -62,9 +66,11 @@ public abstract class YLIsBasePageFragment extends Fragment {
                 break;
         }
         menu.setHeaderTitle(title);
-        getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.context_nagaosi, menu);
     }
     
+    //--  長押しメニュー  --//
+    // 長押しされると呼ばれる。
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -123,20 +129,13 @@ public abstract class YLIsBasePageFragment extends Fragment {
     
     
     /**  ↗︎ オプションメニューの中身設定  */
-    private MenuInflater menuInflater;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        Log.d("(YLI)onCreate", "YLI_BaseFragment  ->  Create");
         menu.clear();
-        menuInflater.inflate(R.menu.y_menu, menu);
-        this.menuInflater = menuInflater;
+        menuInflater.inflate(R.menu.menu_y, menu);
+        //this.menuInflater = menuInflater;
         super.onCreateOptionsMenu(menu, menuInflater);
-    }
-    
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
-        menuInflater.inflate(R.menu.y_menu, menu);
-        super.onPrepareOptionsMenu(menu);
     }
     
     @Override
@@ -150,7 +149,7 @@ public abstract class YLIsBasePageFragment extends Fragment {
                 Toast.makeText(getContext(), "(未)選択", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_settings:
-                Toast.makeText(getContext(), "設定", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "設定", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), SettingMoldActivity.class);
                 startActivity(intent);
                 return true;

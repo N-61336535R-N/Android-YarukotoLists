@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧;
+package ngrnm.syokuninn_sibou.yarukotolists.YListItem;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,26 +15,30 @@ import io.realm.Realm;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.History;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.urdo_TW;
+import ngrnm.syokuninn_sibou.yarukotolists.YListItem.Items.History;
+import ngrnm.syokuninn_sibou.yarukotolists.YListItem.Items.urdo_TW;
 
 
 /**
  * ＜＜＜＜＜〜〜〜〜〜  やることリストの内容(Item)の編集画面  〜〜〜〜〜＞＞＞＞＞
+ * 
+ * いずれは Fragment にして、ダイアログっぽい感じにする予定。
+ * 
  */
-
-
-public class YItemEditActivity_kyuu extends AppCompatActivity {
+public class YItemEditActivity extends AppCompatActivity {
+    Realm realm;
+    // Item の ID
+    int itemID;
     /** 選択した項目の内容の一時保管場所
      *  [0] タイトル
      *  [1] 概要
-     *  [2] 詳細メモ    */
+     *  [2] 詳細メモ
+     */
     private static final int Item_num = Consts.Item_num;
     
     private EditText[] ET = new EditText[Item_num];
     
     private static Deque<History> ItemCs_after = new ArrayDeque<>();  //「進む」の格納場所
-    
     
     
     /** Called when the activity is first created. */
@@ -56,16 +60,13 @@ public class YItemEditActivity_kyuu extends AppCompatActivity {
          *      → 古いデータは削除（履歴の数は [設定] 可能にする。デフォルト10）
          * ○ 戻る・進むで
          * */
-        //ItemIO.check();
-        // 項目ファイルの中身を取得
-        //edit_latest = ItemIO.readAllItem();
-        
+        // bundle から realm の item id を取得。
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        int itemID = bundle.getInt("itemID");
+        itemID = bundle.getInt("itemID");
     
         // このスレッドのためのRealmインスタンスを取得
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
         YItem yItem = realm.where(YItem.class).equalTo("id", itemID).findFirst();
         String[] kindList = {yItem.getTitle(), yItem.getTxtGaiyou(), yItem.getTxtSyousai()};
         
@@ -82,7 +83,7 @@ public class YItemEditActivity_kyuu extends AppCompatActivity {
     // ↗︎ オプションメニューの中身設定
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.yitem_edit_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_yitem_edit, menu);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
@@ -115,10 +116,28 @@ public class YItemEditActivity_kyuu extends AppCompatActivity {
     
     private void saveButtonClick() {
         /* 入力されたデータを保存 */
-        //ItemIO.updateItem(new String[]{ET[0].getText().toString(), ET[1].getText().toString(), ET[2].getText().toString()});
-        
+        YItem yitem = realm.where(YItem.class).equalTo("id", itemID).findFirst();
+        realm.beginTransaction();
+        yitem.setTitle(ET[0].getText().toString());
+        yitem.setTxtGaiyou(ET[1].getText().toString());
+        yitem.setTxtSyousai(ET[2].getText().toString());
+        realm.commitTransaction();
     }
     
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 戻るボタンが押されたら、保存し、ItemsChecker を再度実行して再読み込みする。
+        saveButtonClick();
+        //ItC.check();
+        Toast.makeText(this, "保存しました", Toast.LENGTH_SHORT).show();
+    }
+
+    
+    /**
+     * 【未】戻る・進むボタン
+     */
     private void undoButtonClick() {
         // 読み込み
         urdo_TW.allow_push = false;
@@ -141,17 +160,9 @@ public class YItemEditActivity_kyuu extends AppCompatActivity {
     }
     
     
-    /**
-     * 適当に追加！！
-     */
-    //private ItemsChecker ItC = new ItemsChecker("aaa");
-    
     @Override
-    protected void onPause() {
-        super.onPause();
-        // 戻るボタンが押されたら、保存し、ItemsChecker を再度実行して再読み込みする。
-        saveButtonClick();
-        //ItC.check();
-        Toast.makeText(this, "保存しました", Toast.LENGTH_SHORT).show();
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close(); // Remember to close Realm when done.
     }
 }

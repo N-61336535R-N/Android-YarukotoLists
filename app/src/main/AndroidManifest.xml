@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:roundIcon="@drawable/app_icon"
-        android:label="やること・タイマー"
+        android:label="やること・Manager"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -17,36 +17,28 @@
             android:name=".MainActivity"
             android:label="やること Manager">
             <intent-filter
-                android:label="やること・タイマー">
+                android:label="やること・Manager">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".YarukotoMainActivity"/>
         <!--activity
-            android:name=".YarukotoList.旧.YListerActivity"
+            android:namYListItemList.旧.YListerActivity"
             android:label="やることリスト 一覧" >
         </activity>
         <activity
-            android:name=".YarukotoList.旧.YItemShowActivity"
+            android:namYListItemList.旧.YItemShowActivity"
             android:label="[項目名]">
         </activity-->
-        <activity
-            android:name=".YarukotoList.YItemsActivity"
+        <!--activity
+            android:namYListItemList.旧.YItemsActivity"
             android:label="[リスト名]" >
-        </activity>
+        </activity-->
         <activity
             android:windowSoftInputMode="adjustResize"
-            android:name=".YarukotoList.YItemEditActivity"
+            android:name=".YListItem.YItemEditActivity"
             android:label="[項目名] 編集">
-        </activity>
-        <activity
-            android:name=".Timer.TimerActivity"
-            android:label="タイマー" >
-        </activity>
-        <activity
-            android:name=".Timer.TimerSetActivity"
-            android:label="タイマー予約" >
         </activity>
         <activity
             android:name=".Settings.SettingMoldActivity"

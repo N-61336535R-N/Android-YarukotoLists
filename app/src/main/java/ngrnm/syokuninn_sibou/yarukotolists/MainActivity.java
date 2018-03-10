@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,7 +20,7 @@ import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.PrefDetailSetter.SetBackupFragment;
 import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.mkMoldDialog;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.DirFile;
+
 
 /**
  * Created by ryo on 2017/09/03.
@@ -31,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_ycategory);
     
-        /* ルートフォルダを、Consts に登録 */
+        /* ルートフォルダを Consts に登録 */
         Consts.rootPath = getApplicationContext().getFilesDir().getPath() + "/";
-        // DirFile の初期化（ルートディレクトリの設定）
-        DirFile.setDirFile(Consts.rootPath);
+    
+        // Realm 全体の初期化［一度でOK］
+        Realm.init(this);
         
         
         /* Realm の初期化 */
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         Realm realm = Realm.getDefaultInstance();
 /*        // categoryが一つも登録されていない場合、デモを一つ追加。
         if (realm.where(YCategory.class).findAll().size() == 0) {
-            YCategoryFragment.add(realm, "Category 0");
+            YLI_GridViewFragment.add(realm, "Category 0");
         }
 */      if (realm.where(YList.class).equalTo("id", 0).findFirst() == null) {
             YPathTable yL_pTable_root = new YPathTable(false, 0, 0);
@@ -80,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
     
     
     private void initRealm() throws IOException {
-        // Realm 全体の初期化［一度でOK］
-        Realm.init(this);
         // データベースの初期化（読み込み）
         RealmConfiguration config
                 = new RealmConfiguration
@@ -128,8 +129,12 @@ public class MainActivity extends AppCompatActivity {
                         // Open a transaction to store items into the realm
                         realm.beginTransaction();
                         for (Class yclass : Consts.realmAllClasses) {
-                            ins = zipCU.getZipFileInputStream("YDB/"+yclass.getName()+".json");
-                            realm.createAllFromJson(yclass, ins);
+                            try {
+                                ins = zipCU.getZipFileInputStream("YDB/"+yclass.getName()+".json");
+                                realm.createAllFromJson(yclass, ins);
+                            } catch (FileNotFoundException e) {
+                                Log.d("Main", "クラス名"+yclass.getName());
+                            }
                         }
                         realm.commitTransaction();
                         realm.close();
@@ -154,11 +159,14 @@ public class MainActivity extends AppCompatActivity {
             }
             
             // 設定を通常に戻す。
-            dbSeter = new DataBaseSettings();
+            final DataBaseSettings new_dbSeter = new DataBaseSettings();
             realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            realm.copyToRealm(dbSeter);
-            realm.commitTransaction();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealm(new_dbSeter);
+                }
+            });
             realm.close();
         }
     }

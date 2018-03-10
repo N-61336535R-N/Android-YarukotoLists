@@ -1,21 +1,30 @@
-package ngrnm.syokuninn_sibou.yarukotolists;
+package ngrnm.syokuninn_sibou.yarukotolists.Timer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
 
+import ngrnm.syokuninn_sibou.yarukotolists.R;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.SettingMoldActivity;
 import ngrnm.syokuninn_sibou.yarukotolists.Timer.Utils.CountDown;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.YListerActivity;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.DebugUtils.SysOutPrintln;
+
+import static android.support.v4.app.ActivityCompat.invalidateOptionsMenu;
 
 
 /**
@@ -44,6 +53,7 @@ public class YTimerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
     
     @Override
@@ -103,8 +113,8 @@ public class YTimerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 変更の必要あり。
-                Intent intent = new Intent(getActivity(), YListerActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getActivity(), YListerActivity.class);
+                //startActivity(intent);
             }
         });
     
@@ -123,36 +133,49 @@ public class YTimerFragment extends Fragment {
     
     
     
-    
-    /*
+    /**  ↗︎ オプションメニューの中身設定  */
     // 画面切り替えと同時に、オプションも切り替える方法を考える。
+    private Menu menu;
+    private MenuInflater menuInflater;
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.timer_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        Log.d("(Timer)onCreate", "YTimerFragment  ->  Create");
+        this.menu = menu;
+        this.menuInflater = menuInflater;
+        menu.clear();
+        menuInflater.inflate(R.menu.menu_timer, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        
         switch (id) {
             case R.id.menu_add_list:
-                Toast.makeText(this, "(未)タイマーセット追加", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_settings:
-                Toast.makeText(this, "(未)設定", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "(未)タイマーセット追加", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_save_timer_set:
-                Toast.makeText(this, "(未)タイマーリスト保存", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "(未)タイマーリスト保存", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.system_exit:
-                Toast.makeText(this, "(未)終了", Toast.LENGTH_SHORT).show();
+            case R.id.action_settings:
+                Intent intent = new Intent(getActivity(), SettingMoldActivity.class);
+                startActivity(intent);
                 return true;
         }
         
         return super.onOptionsItemSelected(item);
     }
-    */
+    
+    /*
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        
+        SysOutPrintln.printMark("setUserVisibleHint -> getView() : " + getView());
+        if (isVisibleToUser && getView() != null) {
+            // 画面が出来上がった後で処理する。
+            //getActivity().invalidateOptionsMenu();
+        }
+    }*/
     
 }

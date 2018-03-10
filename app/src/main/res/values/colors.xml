@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="fab_icon_color">#64ddff</color>
     <color name="fab_background_color">#6bf4fdff</color>
+
+    <color name="dark_theme_background">#f52b2b2b</color>
 </resources>
