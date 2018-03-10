@@ -1,21 +1,5 @@
 package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import ngrnm.syokuninn_sibou.yarukotolists.R;
-import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.LibraryChecker;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ImageArrayAdapter;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ViewData;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YItemsActivity;
-
 /**
  *   ＜＜＜＜＜〜〜〜〜〜  やることリスト  〜〜〜〜〜＞＞＞＞＞
  * Created by M.R on 2017/04/13.
@@ -29,7 +13,8 @@ import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YItemsActivity;
  *  ■ mDatas が用意できれば、画面描画はできる。
  */
 
-public class YListerActivity extends YLibraryActivity {
+public class YListerActivity //extends YLibraryActivity 
+{/*
     private static final String kind = "Lists";
     @Override protected final String getKind() {
         return kind;
@@ -107,5 +92,5 @@ public class YListerActivity extends YLibraryActivity {
         lV.setAdapter(adapter);
     }
     
-
+*/
 }

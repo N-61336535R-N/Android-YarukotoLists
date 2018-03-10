@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,6 +113,31 @@ public class YLsIsFragment extends YLIsBasePageFragment {
         
         registerForContextMenu(lV);
     
+    
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //adapter = new RecyclerViewAdapter();
+        recyclerView.setAdapter(adapter);
+        ItemTouchHelper itemDecor = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        final int toPos = target.getAdapterPosition();
+                        adapter.notifyItemMoved(fromPos, toPos);
+                        return true;
+                    }
+                
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        final int fromPos = viewHolder.getAdapterPosition();
+                        datasource.remove(fromPos);
+                        adapter.notifyItemRemoved(fromPos);
+                    }
+                });
+        itemDecor.attachToRecyclerView(recyclerView);
         // FloatingActionButton（↘︎のタイマーアイコン）
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_add);
         fab.setOnClickListener(view_ -> {

@@ -36,12 +36,8 @@ dependencies {
 
     //  ↓↓ この行追加(EnhancedListViewというライブラリ)
     compile 'de.timroes.android:EnhancedListView:0.3.4'
-    // ListViewAnimations というLibraryを追加
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
-    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
-    compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
-    compile 'com.nineoldandroids:library:2.4.0'
+    // RecyclerView ItemTouchHelper というLibraryを追加
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     
     // Preference 関係？
     compile 'com.android.support:design:26.1.0'
