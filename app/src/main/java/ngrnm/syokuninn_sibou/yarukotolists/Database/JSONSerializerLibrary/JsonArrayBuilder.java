@@ -10,9 +10,9 @@ import java.util.List;
  */
 
 public class JsonArrayBuilder {
+    private JsonArray jsonArray = new JsonArray();
     
     public JsonArray addAll(List<Integer> cList) {
-        JsonArray jsonArray = new JsonArray();
         for (int item : cList) {
             jsonArray.add(new JsonPrimitive(item));
         }

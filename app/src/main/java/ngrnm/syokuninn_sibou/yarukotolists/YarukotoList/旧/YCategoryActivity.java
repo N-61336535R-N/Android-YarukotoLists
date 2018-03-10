@@ -17,8 +17,6 @@ import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.AddImage;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.LibraryChecker;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ViewData;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YLibraryActivity;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YListerActivity;
 
 
 /**

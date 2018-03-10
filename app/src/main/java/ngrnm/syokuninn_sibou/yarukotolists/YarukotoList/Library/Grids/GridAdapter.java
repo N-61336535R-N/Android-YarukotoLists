@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.disuse.YCategory;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ViewData;
 
@@ -118,12 +118,12 @@ public class GridAdapter extends BaseAdapter {
         
         YCategory ylist = yctgrys.get(position);
         
-        if (ylist != null) {
+/*        if (ylist != null) {
             ((TextView) currentView.findViewById(R.id.textview)).setText(ylist.getTitle());
             Bitmap bmp = BitmapFactory.decodeFile(imgRootDir + ylist.getImgName());
             ((ImageView) currentView.findViewById(R.id.imageview)).setImageBitmap(bmp);
         }
-        
+*/        
         return currentView;
     }
     

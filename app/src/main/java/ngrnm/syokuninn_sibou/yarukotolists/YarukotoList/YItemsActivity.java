@@ -13,6 +13,8 @@ import de.timroes.android.listview.EnhancedListView;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Items.ItemsChecker;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.Checker;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.YActivity;
 
 /**
  *  ＜＜＜＜＜〜〜〜〜〜  やることリストの内容(Item)一覧  〜〜〜〜〜＞＞＞＞＞

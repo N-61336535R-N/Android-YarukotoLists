@@ -1,17 +1,12 @@
-package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs;
-
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
+package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.disuse;
 
 /**
  * Created by ryo on 2018/03/02.
  */
 
-public class YCtgryOrder extends RealmObject {
-    @PrimaryKey
+public class YCtgryOrder //extends RealmObject
+{
+/*    @PrimaryKey
     private int id = 0;
     private RealmList<Integer> yctgOrder = new RealmList<>();
     private RealmList<Integer> yctgOrder_Custom = new RealmList<>();
@@ -24,9 +19,9 @@ public class YCtgryOrder extends RealmObject {
         return yctgOrder_Custom;
     }
     
-    
+*/    
     /* JSON 用の Getter */
-    public int getId() {return id;}
+/*    public int getId() {return id;}
     public String getOrderKind() {return orderKind;}
     
     public void setId(int id) {
@@ -115,9 +110,9 @@ public class YCtgryOrder extends RealmObject {
     }
     
     public void moveYCtgry(Realm realm, int before_p, int after_p) {
-        /* 50音・日付順をカスタムに反映させる唯一の方法 */
+*/        /* 50音・日付順をカスタムに反映させる唯一の方法 */
         // 50音・日付にソートした状態で、どれか一つを移動させる。
-        realm.beginTransaction();
+/*        realm.beginTransaction();
         if (after_p < before_p) {
             orderKind = "custom";
             
@@ -133,5 +128,5 @@ public class YCtgryOrder extends RealmObject {
         }
         realm.commitTransaction();
     }
-    
+*/    
 }

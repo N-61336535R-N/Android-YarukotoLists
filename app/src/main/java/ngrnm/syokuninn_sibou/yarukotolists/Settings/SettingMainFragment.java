@@ -28,7 +28,7 @@ public class SettingMainFragment extends Fragment {
             // Scenes of Isle of Wight
             "表示",
             "構造",
-            "バックアップ"
+            "バックアップ・復元"
     };
     // アイコン一覧
     static final int[] icons = {
@@ -72,7 +72,7 @@ public class SettingMainFragment extends Fragment {
                     case "構造":
                         prefragc = new Set_p2Fragment();
                         break;
-                    case "バックアップ":
+                    case "バックアップ・復元":
                         prefragc = new SetBackupFragment();
                         break;
                     default:

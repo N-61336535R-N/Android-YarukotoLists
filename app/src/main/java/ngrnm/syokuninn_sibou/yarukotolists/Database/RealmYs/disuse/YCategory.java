@@ -1,15 +1,11 @@
-package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs;
-
-import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
+package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.disuse;
 
 /**
  * Created by ryo on 2018/02/21.
  */
 
-public class YCategory extends RealmObject {
+public class YCategory //extends RealmObject
+{/*
     @PrimaryKey
     private int id;
     private String title;  //Category名
@@ -48,9 +44,6 @@ public class YCategory extends RealmObject {
         }
         realm.close();
     }
-    public void setId(int id) {
-        this.id = id;
-    }
     public void setHaveListID(int haveListID) {
         this.haveListID = haveListID;
     }
@@ -65,4 +58,4 @@ public class YCategory extends RealmObject {
     public YList getHaveList(Realm realm) {
         return realm.where(YList.class).equalTo("id", haveListID).findFirst();
     }
-}
+*/}

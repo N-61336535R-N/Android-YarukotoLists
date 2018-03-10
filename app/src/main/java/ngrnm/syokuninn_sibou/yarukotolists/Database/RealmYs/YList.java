@@ -1,7 +1,6 @@
 package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs;
 
 import java.util.List;
-import java.util.UUID;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -22,14 +21,11 @@ public class YList extends RealmObject implements YLI_Interface {
     private String title;  //List名
     private String imgName;  //画像の名前
     
-    private RealmList<YList> haveLists = new RealmList<>();
-    private RealmList<YItem> haveItems = new RealmList<>();
-    
     //Viewを作る際に読まれるリスト。順番を考慮。最低限の情報に絞ったYLIをリストアップ。
     private String orderKind = "custom";
     private String orderKindOpt = "win";
-    private RealmList<YLI> order_list = new RealmList<>();
-    private RealmList<YLI> order_custom = new RealmList<>();  //カスタム並び順のみ別に用意する方向で！
+    private RealmList<Integer> order_list = new RealmList<>();
+    private RealmList<Integer> order_custom = new RealmList<>();  //カスタム並び順のみ別に用意する方向で！
     
     @Ignore
     private YListSorter_Mac ySortMac;
@@ -39,10 +35,10 @@ public class YList extends RealmObject implements YLI_Interface {
     private YListOrder_Custom yOrderCustom;  //カスタム並び順のみ別に用意する方向で！
     
     
-    public YList(String title) {
+    public YList(String title, int id) {
         this.title = title;
-        imgName = "No_Image";
-        setId();
+        this.imgName = "No_Image";
+        this.id = id;
     }
     //作らないとエラーになる。要素はコピーされるっぽいので、空でOK
     public YList() {}
@@ -54,32 +50,21 @@ public class YList extends RealmObject implements YLI_Interface {
     public String getTitle() {
         return title;
     }
-    public RealmList<YList> getLists() {
-        return haveLists;
-    }
-    public RealmList<YItem> getItems() {
-        return haveItems;
-    }
     public String getImgName() {
         return imgName;
     }
     
-    public void setId() {
-        // このスレッドのためのRealmインスタンスを取得
-        Realm realm = Realm.getDefaultInstance();
-        while (true) {
-            int i = (int) UUID.randomUUID().getMostSignificantBits();
-            if (realm.where(YList.class).equalTo("id", i).findAll().size() == 0) {
-                this.id = i;
-                break;
-            }
-        }
-        realm.close();
+    public String getOrderKind() {
+        return orderKind;
     }
+    public String getOrderKindOpt() {
+        return orderKindOpt;
+    }
+    public RealmList<Integer> getOrder_custom() {
+        return order_custom;
+    }
+    
     // change
-    public void setId(int id) {
-        this.id = id;
-    }
     public void setTitle(String title) {
         this.title = title;
     }
@@ -87,6 +72,12 @@ public class YList extends RealmObject implements YLI_Interface {
         this.imgName = imgName;
     }
     
+    public void setOrderKind(String orderKind) {
+        this.orderKind = orderKind;
+    }
+    public void setOrderKindOpt(String orderKindOpt) {
+        this.orderKindOpt = orderKindOpt;
+    }
     
     
     /**
@@ -99,17 +90,9 @@ public class YList extends RealmObject implements YLI_Interface {
      *          実際の操作は sortCustom() の呼び出しだけでOK
      *      ●
      */
-    public String getOrderKind() {
-        return orderKind;
-    }
-    public void setOrderKind(String orderKind) {
-        this.orderKind = orderKind;
-    }
-    public String getOrderKindOpt() {
-        return orderKindOpt;
-    }
-    public void setOrderKindOpt(String orderKindOpt) {
-        this.orderKindOpt = orderKindOpt;
+    private YPathTable getYPTable(Realm realm) {
+        //RealmResults test = realm.where(YPathTable.class).findAll();
+        return realm.where(YPathTable.class).equalTo("id", this.id).findFirst();
     }
     
     /* orderの初期化 */
@@ -121,12 +104,14 @@ public class YList extends RealmObject implements YLI_Interface {
     }
     private void initCustom(Realm realm) {
         if (yOrderCustom == null) {
+            YPathTable yPTable = getYPTable(realm);
+            
             realm.beginTransaction();
             if (order_custom.size() == 0) {
-                yOrderCustom = new YListOrder_Custom(haveLists, haveItems);
+                yOrderCustom = new YListOrder_Custom(yPTable);
             } else {
-                if (order_custom.size() == (haveItems.size() + haveLists.size())) {
-                    yOrderCustom = new YListOrder_Custom(order_custom);
+                if (order_custom.size() == yPTable.getChildIDs().size()) {
+                    yOrderCustom = new YListOrder_Custom(yPTable, order_custom);
                 } else throw new IllegalStateException("custom の要素数が不正です。");
             }
             realm.commitTransaction();
@@ -134,59 +119,45 @@ public class YList extends RealmObject implements YLI_Interface {
     }
     
     /* order_custom, order_list を更新するためのメソッド */
-    private void updateO_list(Realm realm, List<YLI> oList, List<YLI> replaceList) {
+    private void updateO_list(Realm realm, List<Integer> targetList, List<Integer> upsetList) {
         realm.beginTransaction();
-        oList.clear();
-        oList.addAll(replaceList);
+        targetList.clear();
+        targetList.addAll(upsetList);
         realm.commitTransaction();
     }
-    public void add_List(Realm realm, int posi, final YList yL) {
+    public void add_yLI(Realm realm, int posi, Integer add_id) {
         // custom を同期
         initCustom(realm);
-        // YLI に変換
-        YLI yLorI = new YLI(false, yL.getId());
-        addC(realm, posi, yLorI);
-        realm.executeTransaction(realm1 -> haveLists.add(0, yL));
-        
-        sortO(realm);
-    }
-    public void add_Item(Realm realm, int posi, final YItem yI) {
-        // custom を同期
-        initCustom(realm);
-        // YLI に変換
-        YLI yLorI = new YLI(true,  yI.getId());
-        addC(realm, posi, yLorI);
-        realm.executeTransaction(realm1 -> haveItems.add(0, yI));
+        // YLI_Wrapper に変換
+        addC(realm, posi, add_id);
+        YPathTable yPTable = getYPTable(realm);
+        realm.executeTransaction(realm1 -> yPTable.getChildIDs().add(0, add_id));
         
         sortO(realm);
     }
     public void rm_LI(Realm realm, final int posi) {
         // custom を同期
         initCustom(realm);
-        // YLI に変換
         rmC(realm, posi);
-        YLI yli = order_list.get(posi);
-        if (yli.isItem()) {
-            YItem rmYI = realm.where(YItem.class).equalTo("id", yli.getLI_id()).findFirst();
-            realm.executeTransaction(realm1 -> {
-                haveItems.remove(rmYI);
-                if (rmYI != null)  rmYI.deleteFromRealm();
-            });
-        } else {
-            YList rmYL = realm.where(YList.class).equalTo("id", yli.getLI_id()).findFirst();
-            realm.executeTransaction(realm1 -> {
-                haveLists.remove(rmYL);
-                if (rmYL != null)  rmYL.deleteFromRealm();
-            });
-        }
+        
+        // 子List も辿って全て削除
+        YPathTable yPTable = getYPTable(realm);
+        Integer yID = order_list.get(posi);
+        YPathTable rmYPT = realm.where(YPathTable.class).equalTo("id", yID).findFirst();
+        realm.executeTransaction(realm1 -> {
+            // 削除対象のpathTable内の del を呼び出す。
+            rmYPT.del_YLI(realm);
+            yPTable.getChildIDs().remove(yID);
+        });
+        
         sortO(realm);
     }
     
     
     /* Custom */
-    private void addC(Realm realm, int posi, YLI yLorI) {
+    private void addC(Realm realm, int posi, Integer yID) {
         initCustom(realm);
-        yOrderCustom.add(posi, yLorI);
+        yOrderCustom.add(posi, yID);
     }
     private void rmC(Realm realm, int posi) {
         initCustom(realm);
@@ -204,13 +175,13 @@ public class YList extends RealmObject implements YLI_Interface {
         realm.beginTransaction();
         if (after_p != before_p) {
             orderKind = "custom";
-            YLI mli = order_list.get(before_p);
+            Integer li_id = order_list.get(before_p);
             if (after_p < before_p) {
                 order_list.remove(before_p);
-                order_list.add(after_p, mli);
+                order_list.add(after_p, li_id);
                 updateO_list(realm, order_custom, order_list);
             } else if (before_p < after_p) {
-                order_list.add(after_p, mli);
+                order_list.add(after_p, li_id);
                 order_list.remove(before_p);
                 updateO_list(realm, order_custom, order_list);
             }
@@ -229,10 +200,11 @@ public class YList extends RealmObject implements YLI_Interface {
             }
             updateO_list(realm, order_list, order_custom);
         } else {
+            YPathTable yPTable = getYPTable(realm);
             switch (orderKindOpt) {
                 case "win": switch (orderKind) {
                     case "50":
-                        ySortWin = new YListSorter_Win(haveLists, haveItems);
+                        ySortWin = new YListSorter_Win(yPTable);
                         updateO_list(realm, order_list, ySortWin.sort_win50onn(realm));  // transaction 含む。
                         break;
                     case "date":
@@ -242,7 +214,7 @@ public class YList extends RealmObject implements YLI_Interface {
                     break;
                 case "mac": switch (orderKind) {
                     case "50":
-                        ySortMac = new YListSorter_Mac(haveLists, haveItems);
+                        ySortMac = new YListSorter_Mac(yPTable);
                         updateO_list(realm, order_list, ySortMac.sort_mac50onn(realm));  // transaction 含む。
                         break;
                     case "date":
@@ -256,7 +228,7 @@ public class YList extends RealmObject implements YLI_Interface {
     }
     
     
-    public RealmList<YLI> getO_list() {
+    public RealmList<Integer> getO_list() {
         return order_list;
     }
     

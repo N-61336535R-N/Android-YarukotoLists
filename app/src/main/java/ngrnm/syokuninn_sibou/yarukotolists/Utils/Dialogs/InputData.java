@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.Utils;
+package ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs;
 
 /**
  * Created by M.R on 2017/06/27.

@@ -36,6 +36,14 @@ dependencies {
 
     //  ↓↓ この行追加(EnhancedListViewというライブラリ)
     compile 'de.timroes.android:EnhancedListView:0.3.4'
+    // ListViewAnimations というLibraryを追加
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    
+    // Preference 関係？
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:preference-v7:26.1.0'
@@ -43,7 +51,7 @@ dependencies {
     // RealmRecyclerViewAdapter を使うために追加
     compile 'io.realm:android-adapters:2.1.1'
     
-    // Backup 時の JSON を使いやすくするために、Jackson を追加
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.4'
+    // Backup 時の JSON を使いやすくするために、GSON を追加
+//    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.4'
     compile 'com.google.code.gson:gson:2.8.2'
 }

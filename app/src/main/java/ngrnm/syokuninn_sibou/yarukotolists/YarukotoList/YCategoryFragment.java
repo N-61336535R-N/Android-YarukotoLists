@@ -1,49 +1,22 @@
 package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList;
 
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.text.InputType;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedList;
-
-import io.realm.Realm;
-import io.realm.RealmList;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCtgryOrder;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
-import ngrnm.syokuninn_sibou.yarukotolists.R;
-import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YCLIsBasePageFragment;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.AddImage;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Grids.GridAdapter;
 
 /**
  * Created by ryo on 2018/02/19.
  */
 
-public class YCategoryFragment extends YCLIsBasePageFragment {
+public class YCategoryFragment //extends YLIsBasePageFragment 
+{
     // gridView 関連
     private GridAdapter adapter;
     private GridView gV;
     
     
     
-    @Override
+/*    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ycategory, null);
         
@@ -71,7 +44,7 @@ public class YCategoryFragment extends YCLIsBasePageFragment {
         });
         
         registerForContextMenu(gV);
-    /*
+*/ /*
         //  タイマー設定画面に移動するためのボタン(↓の横長ボタン)
         Button sendButton = (Button) findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -91,13 +64,13 @@ public class YCategoryFragment extends YCLIsBasePageFragment {
                 startActivity(intent);
             }
         });
-    */
-        return view;
-    }
+*/
+//        return view;
+//    }
     
     
     
-    
+/*    
     protected void updateList() {
         // デフォルト画像が準備できてない（No_Image.pngがない）場合は、セッティングし直す。
         // 
@@ -178,7 +151,7 @@ public class YCategoryFragment extends YCLIsBasePageFragment {
                 updateList();
             });
             AlertDialog TsuikaDialog = ADBuilder.create();
-            /* Dialog表示と同時にキーボードを出す。 */
+            //// Dialog表示と同時にキーボードを出す。 ////
             TsuikaDialog.setOnShowListener(arg0 -> {
                 InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(editView, 0);
@@ -234,12 +207,12 @@ public class YCategoryFragment extends YCLIsBasePageFragment {
     
     
     @Override
-    protected String getSelectedItemTitle(int posi) {
+    protected String getSelectedLI_title(int posi) {
         return realm.where(YCtgryOrder.class).findFirst().getYCtgAtPosiFromYO(realm, posi).getTitle();
     }
     
     @Override
-    protected void editListItem(int posi, String title) {
+    protected void renameListItem(int posi, String title) {
         YCtgryOrder yco = realm.where(YCtgryOrder.class).findFirst();
         yco.editYctg(realm, posi, title);
     }
@@ -249,5 +222,9 @@ public class YCategoryFragment extends YCLIsBasePageFragment {
     }
     
     
-    
-}
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateList();
+    }
+*/}

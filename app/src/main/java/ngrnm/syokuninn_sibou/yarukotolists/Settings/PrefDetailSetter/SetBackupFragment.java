@@ -1,8 +1,14 @@
 package ngrnm.syokuninn_sibou.yarukotolists.Settings.PrefDetailSetter;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -15,15 +21,18 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 import ngrnm.syokuninn_sibou.yarukotolists.Database.BackupUtils.Backuper;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.BackupUtils.Restorer;
+import ngrnm.syokuninn_sibou.yarukotolists.MainActivity;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.GuruguruDialog;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.MoldAlertDialogFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.mkMoldDialog;
 import ngrnm.syokuninn_sibou.yarukotolists.Utils.DirPicker.DirSelectDialog;
 import ngrnm.syokuninn_sibou.yarukotolists.Utils.FilePicker.FileSelectionDialog;
-import ngrnm.syokuninn_sibou.yarukotolists.Utils.GuruguruDialog;
-import ngrnm.syokuninn_sibou.yarukotolists.Utils.MoldAlertDialogFragment;
-import ngrnm.syokuninn_sibou.yarukotolists.Utils.mkMoldDialog;
 
 /**
  * Created by ryo on 2018/03/04.
@@ -33,9 +42,10 @@ public class SetBackupFragment extends PreferenceFragmentCompat implements Share
     private static int CODE_BACKUP = 1618585;
     private static int CODE_RESTORE = 5376868;
     
-    public static final String JSON_SKIP = "json-skip";
-    public static final String JSON_UPDATE = "json-update";
-    public static final String Realm_REPLACE = "realm";
+    public static final String JSON_SimpleAdd = "json-add";
+    public static final String JSON_SelectAdd = "json-slectadd";
+    public static final String JSON_Rollback = "json-rollback";
+    public static final String Realm_Rollback = "realm-rollback";
     
     
     @Override
@@ -223,36 +233,59 @@ public class SetBackupFragment extends PreferenceFragmentCompat implements Share
                             return;
                         }
     
+    
+                        String selected = sp.getString("prefkey_selectlist_restore_mode", "");
+                        // 確認ダイアログを準備。
                         MoldAlertDialogFragment kakuninFragment = new MoldAlertDialogFragment();
+                        String text = restoreExplains.get(selected);
                         Bundle bundle = new Bundle();
-                        bundle.putString("title", "確認");
-                        bundle.putString("message", "データを復元します。\n復元されたデータは、データベースに追加されます。\nよろしいですか？");
-                        kakuninFragment.setArguments(bundle);
-                        kakuninFragment.setOnClickedPositiveButtonListener(true, new MoldAlertDialogFragment.OnClickedPositiveButtonListener() {
-                            @Override
-                            public void OnClickedPositiveButtonListener() {
-                                // 作業進行中のDialogを表示
-                                GuruguruDialog GDlog = new GuruguruDialog(getActivity());
-                                GDlog.setDoInBackgroundListener(new GuruguruDialog.DoInBackgroundListener() {
-                                    @Override
-                                    public void DoInBackgroundListener() {
-                                        // 復元を実行
-                                        try {
-                                            restore.restoreAll();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
+                        if (!selected.equals(JSON_Rollback) && !selected.equals(Realm_Rollback)) {
+                            bundle.putString("title", "確認");
+                            bundle.putString("message", text+"\nを実行します！\nよろしいですか？");
+                            kakuninFragment.setArguments(bundle);
+                            kakuninFragment.setOnClickedPositiveButtonListener(true, new MoldAlertDialogFragment.OnClickedPositiveButtonListener() {
+                                @Override
+                                public void OnClickedPositiveButtonListener() {
+                                    // 作業進行中のDialogを表示
+                                    GuruguruDialog GDlog = new GuruguruDialog(getActivity());
+                                    GDlog.setDoInBackgroundListener(new GuruguruDialog.DoInBackgroundListener() {
+                                        @Override
+                                        public void DoInBackgroundListener() {
+                                            // 復元を実行
+                                            try {
+                                                restore.restoreAll();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            String title = "復元 完了！",
+                                                    message = filePath + " から データベース に追加しました。";
+                                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                            mkMoldDialog.mkCheckDialogFragm(title, message).show(ft, "dialog");
                                         }
-                                        String title = "復元 完了！",
-                                                message = filePath + " から データベース に追加しました。";
-                                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                                        mkMoldDialog.mkCheckDialogFragm(title, message).show(ft, "dialog");
+                                    });
+                                    // 非同期(スレッド)処理の実行
+                                    GDlog.execute();
+                                }
+                            });
+                        } else {
+                            bundle.putString("title", "確認");
+                            bundle.putString("message", text+"\nを実行します！\n復元の際に、自動で再起動しますが、しばらくお待ち下さい。\n実行してよろしいですか？");
+                            kakuninFragment.setArguments(bundle);
+                            kakuninFragment.setOnClickedPositiveButtonListener(true, new MoldAlertDialogFragment.OnClickedPositiveButtonListener() {
+                                @Override
+                                public void OnClickedPositiveButtonListener() {
+                                    // 復元を実行
+                                    try {
+                                        // DataBaseSetting のフラグを立てるだけ。
+                                        restore.restoreAll();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                                // 非同期(スレッド)処理の実行
-                                GDlog.execute();
-                            }
-                        });
-                        
+                                    int waitperiod = 1000; // 5sec
+                                    restart(getActivity().getApplication(), waitperiod);  // 再起動する
+                                }
+                            });
+                        }
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         kakuninFragment.show(ft, "dialog");
     
@@ -265,12 +298,38 @@ public class SetBackupFragment extends PreferenceFragmentCompat implements Share
         });
     
     }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    void restart(Context cnt, int period){
+        // intent 設定で自分自身のクラスを設定
+        Intent mainActivity = new Intent(cnt, MainActivity.class);
+        
+        // PendingIntent , ID=0
+        PendingIntent pendingIntent = PendingIntent.getActivity(cnt,
+                0, mainActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        
+        // AlarmManager のインスタンス生成
+        AlarmManager alarmManager = (AlarmManager)cnt.getSystemService(Context.ALARM_SERVICE);
+        
+        // １回のアラームを現在の時間から period 秒後 に実行させる
+        if(alarmManager != null){
+            long trigger = System.currentTimeMillis() + period;
+            alarmManager.setExact(AlarmManager.RTC, trigger, pendingIntent);
+        }
+        
+        // アプリ終了
+        getActivity().finish();
+    }
     
     
     
-    
-    
-    
+    private static final Map<String, String> restoreExplains = new HashMap<String, String>() {
+        {
+            put(JSON_SimpleAdd, "【追加】    Simple add");
+            put(JSON_SelectAdd, "【選択追加】Select add");
+            put(JSON_Rollback, "【入れ替え】Rollback (json)");
+            put(Realm_Rollback, "【入れ替え】Rollback (realm)");
+        }
+    };
     @Override
     public void onResume() {
         super.onResume();
@@ -285,19 +344,23 @@ public class SetBackupFragment extends PreferenceFragmentCompat implements Share
         findPreference(key).setSummary( sp.getString(key, "") );
         
         key = "prefkey_selectlist_restore_mode";
-        String text = "未選択";
         String selected = sp.getString(key, "");
+        String text = restoreExplains.get(selected);
         switch (selected) {
-            case JSON_SKIP:
-                text = "インポート・スキップ（json）：\nデータの追加を行います。\n※ 同じ名前のものは スキップ されます。";
+            case JSON_SimpleAdd:
+                text += "：\n復元したデータを「全て追加」します。";
                 
                 break;
-            case JSON_UPDATE:
-                text = "インポート・上書き（json）：\nデータの上書き追加を行います。\n※ 同じ名前のものは 上書き されます。";
+            case JSON_SelectAdd:
+                text += "：\n復元したデータを「選んで追加」します。\n※ 未実装";
                 
                 break;
-            case Realm_REPLACE:
-                text = "総入れ替え（realm）：\nデータベースごと入れ替えます。\n※[重要] 現在のデータは全て削除されます。\n↓復元実行前に、↑バックアップすることをおすすめします。";
+            case JSON_Rollback:
+                text += "：\n現在のデータを全て削除し、復元したデータを\n追加します。（復元の前にバックアップすることをおすすめします）";
+        
+                break;
+            case Realm_Rollback:
+                text += "：\nデータベースごと入れ替えます。\n※[重要] 現在のデータは全て削除されます。\n(復元の前にバックアップをおすすめします)";
                 break;
         }
         findPreference(key).setSummary(text);

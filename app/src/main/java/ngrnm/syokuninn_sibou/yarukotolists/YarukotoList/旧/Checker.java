@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList;
+package ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧;
 
 import java.util.List;
 

@@ -1,11 +1,15 @@
 package ngrnm.syokuninn_sibou.yarukotolists;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import ngrnm.syokuninn_sibou.yarukotolists.Database.BackupUtils.Restorer;
 
 /**
  * Created by ryo on 2018/02/19.
@@ -63,4 +67,13 @@ public class YarukotoMainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
     
+    
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onRestart() {
+        boolean rollbackFlag = Restorer.getRollbackFlag();
+        if (rollbackFlag)
+            finishAndRemoveTask();
+        super.onRestart();
+    }
 }

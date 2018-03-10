@@ -15,7 +15,7 @@ import android.widget.ToggleButton;
 import java.util.List;
 
 import ngrnm.syokuninn_sibou.yarukotolists.Timer.Utils.CountDown;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YListerActivity;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.YListerActivity;
 
 
 /**

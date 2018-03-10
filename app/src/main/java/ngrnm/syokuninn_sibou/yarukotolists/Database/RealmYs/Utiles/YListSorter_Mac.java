@@ -4,10 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import io.realm.Realm;
-import io.realm.RealmList;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 
 /**
  * Created by ryo on 2018/02/24.
@@ -15,12 +12,12 @@ import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
 
 public class YListSorter_Mac extends YListSorter {
     
-    public YListSorter_Mac(RealmList<YList> haveLists, RealmList<YItem> haveItems) {
-        mkYListTmp(haveLists, haveItems);
+    public YListSorter_Mac(YPathTable yPT) {
+        super(yPT);
     }
     
-    public LinkedList<YLI> sort_mac50onn(final Realm realm) {
-        Collections.sort(tmpOrderList, (l1, l2) -> l1.getLI_title(realm).compareTo(l2.getLI_title(realm)));
+    public LinkedList<Integer> sort_mac50onn(final Realm realm) {
+        Collections.sort(tmpOrderList, (id1, id2) -> getLI_title(realm,id1).compareTo( getLI_title(realm,id2) ) );
         return tmpOrderList;
     }
     

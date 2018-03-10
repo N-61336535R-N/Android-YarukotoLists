@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YCategoryFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YLsIsFragment;
 
 
 /**
@@ -35,11 +35,20 @@ public class YFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    
+    /*
         final FragmentManager cfm = getChildFragmentManager();
         FragmentTransaction transaction = cfm.beginTransaction();
         Fragment ycateg_frag = new YCategoryFragment();
         transaction.add(R.id.y_screen, ycateg_frag, "category");
+        transaction.commit();
+    */
+        final FragmentManager cfm = getChildFragmentManager();
+        FragmentTransaction transaction = cfm.beginTransaction();
+    
+        // やることリスト（編集）画面に移動
+        YLsIsFragment yLsIs = YLsIsFragment.newInstance(0, 1);
+        
+        transaction.add(R.id.y_screen, yLsIs, "root");
         transaction.commit();
     
     }

@@ -1,21 +1,30 @@
 package ngrnm.syokuninn_sibou.yarukotolists;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.BackupUtils.ZipCompressUtils;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.DataBaseSettings;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
+import ngrnm.syokuninn_sibou.yarukotolists.Settings.PrefDetailSetter.SetBackupFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.mkMoldDialog;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.DirFile;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.YCategoryFragment;
 
 /**
  * Created by ryo on 2017/09/03.
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,24 +35,37 @@ public class MainActivity extends Activity {
         Consts.rootPath = getApplicationContext().getFilesDir().getPath() + "/";
         // DirFile の初期化（ルートディレクトリの設定）
         DirFile.setDirFile(Consts.rootPath);
-    
-        // Realm 全体の初期化［一度でOK］
-        Realm.init(this);
-        RealmConfiguration config
-                = new RealmConfiguration
-                .Builder()
-                .name(Consts.realmDBname)
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        //Realm.deleteRealm(config);
-        Realm.setDefaultConfiguration(config);
+        
         
         /* Realm の初期化 */
+        try {
+            initRealm();  //データベースの Rollback の処理もここで。
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        /* データベース の初期化 */
         // このスレッドのためのRealmインスタンスを取得
         Realm realm = Realm.getDefaultInstance();
-        // categoryが一つも登録されていない場合、デモを一つ追加。
+/*        // categoryが一つも登録されていない場合、デモを一つ追加。
         if (realm.where(YCategory.class).findAll().size() == 0) {
             YCategoryFragment.add(realm, "Category 0");
+        }
+*/      if (realm.where(YList.class).equalTo("id", 0).findFirst() == null) {
+            YPathTable yL_pTable_root = new YPathTable(false, 0, 0);
+            YList yL_root = new YList("root", 0);
+            YPathTable yl_pTable_demo = new YPathTable(false, 0);
+            YList ylst_demo = new YList("list 0", yl_pTable_demo.getId());
+    
+            // Realmへオブジェクトをコピーします。
+            realm.beginTransaction();
+            // これ以降の変更は、返り値のオブジェクトに対して行う必要があります
+            realm.copyToRealm(yL_pTable_root);
+            realm.copyToRealm(yl_pTable_demo);
+            YList rylst_demo = realm.copyToRealm(ylst_demo);
+            YList ylst = realm.copyToRealm(yL_root);
+            realm.commitTransaction();
+            ylst.add_yLI(realm, 0, rylst_demo.getId());  // 新しく作った方のリストだけ先に完成させる。
         }
         realm.close();
     
@@ -57,7 +79,89 @@ public class MainActivity extends Activity {
     
     
     
+    private void initRealm() throws IOException {
+        // Realm 全体の初期化［一度でOK］
+        Realm.init(this);
+        // データベースの初期化（読み込み）
+        RealmConfiguration config
+                = new RealmConfiguration
+                .Builder()
+                .name(Consts.realmDBname)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
+        
+        Realm realm = Realm.getDefaultInstance();
+        DataBaseSettings dbSeter = realm.where(DataBaseSettings.class).equalTo("id", 0).findFirst();
+        if (dbSeter == null) {
+            dbSeter = new DataBaseSettings();
+            realm.beginTransaction();
+            realm.copyToRealm(dbSeter);
+            realm.commitTransaction();
+        }
+        
+        boolean rollbackFlag = dbSeter.rollbackFlag;
+        String rollbackPattern = dbSeter.rollbackPattern;
+        String destiZipPath = dbSeter.destiZipPath;
+        realm.close();  //一旦閉じる。
     
+        if (rollbackFlag) {
+            if (rollbackPattern == null) {
+                String message = "復元に失敗しました...。";
+                mkMoldDialog.mkCheckDialogFragm("復元失敗", message);
+            } else {
+                
+                /* 指定された zip ファイルから、Backup データを復元 */
+                ZipCompressUtils zipCU = new ZipCompressUtils(destiZipPath);
+                InputStream ins;
+                String message;
+                DialogFragment dlogfragment;
+                FragmentTransaction ft;
+                switch (rollbackPattern) {
+                    case SetBackupFragment.JSON_Rollback:
+                        //// 復元中のぐるぐる を表示
+    
+                        Realm.deleteRealm(config);
+                        Realm.setDefaultConfiguration(config);
+                        
+                        realm = Realm.getDefaultInstance();
+                        // Open a transaction to store items into the realm
+                        realm.beginTransaction();
+                        for (Class yclass : Consts.realmAllClasses) {
+                            ins = zipCU.getZipFileInputStream("YDB/"+yclass.getName()+".json");
+                            realm.createAllFromJson(yclass, ins);
+                        }
+                        realm.commitTransaction();
+                        realm.close();
+                        
+                        message = "データの復元（【入れ替え】Rollback）が完了しました！";
+                        dlogfragment = mkMoldDialog.mkCheckDialogFragm("復元成功！", message);
+                        ft = getSupportFragmentManager().beginTransaction();
+                        dlogfragment.show(ft, "dialog");
+                        break;
+                        
+                    case SetBackupFragment.Realm_Rollback:
+                        message = "未実装の機能です。";
+                        dlogfragment = mkMoldDialog.mkCheckDialogFragm("復元失敗", message);
+                        ft = getSupportFragmentManager().beginTransaction();
+                        dlogfragment.show(ft, "dialog");
+                        break;
+                        
+                    default:
+                        message = "復元に失敗しました...。";
+                        mkMoldDialog.mkCheckDialogFragm("復元失敗", message);
+                }
+            }
+            
+            // 設定を通常に戻す。
+            dbSeter = new DataBaseSettings();
+            realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            realm.copyToRealm(dbSeter);
+            realm.commitTransaction();
+            realm.close();
+        }
+    }
     
     
     

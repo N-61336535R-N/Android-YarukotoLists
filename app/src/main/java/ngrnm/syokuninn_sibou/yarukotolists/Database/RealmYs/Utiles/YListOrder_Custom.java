@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.realm.RealmList;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 
 /**
  * Created by ryo on 2018/02/24.
@@ -15,28 +13,29 @@ import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
 
 public class YListOrder_Custom extends YListSorter {
     
-    public YListOrder_Custom(RealmList<YList> haveLists, RealmList<YItem> haveItems) {
-        mkYListTmp(haveLists, haveItems);
+    public YListOrder_Custom(YPathTable yPTable) {
+        super(yPTable);
     }
-    public YListOrder_Custom(RealmList<YLI> order_custom) {
+    public YListOrder_Custom(YPathTable yPTable, List<Integer> order_custom) {
+        super(yPTable);
         setOrderList(order_custom);
     }
     
     
-    public void swapOrderList(RealmList<YLI> order_list, int idx_a, int idx_b) {
+    public void swapOrderList(RealmList<Integer> order_list, int idx_a, int idx_b) {
         Collections.swap(order_list, idx_a, idx_b);
     }
     
-    public LinkedList<YLI> getOrderList() {
+    public LinkedList<Integer> getOrderList() {
         return tmpOrderList;
     }
-    public void setOrderList(List<YLI> srcO_Custom) {
+    public void setOrderList(List<Integer> srcO_Custom) {
         tmpOrderList.clear();
         tmpOrderList.addAll(srcO_Custom);
     }
     
     
-    public void add(int posi, YLI yLorI) {
+    public void add(int posi, Integer yLorI) {
         tmpOrderList.add(posi, yLorI);
     }
     public void rm(int posi) {

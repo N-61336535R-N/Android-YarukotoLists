@@ -56,11 +56,11 @@ public class ZipCompressUtils {
     }
     public InputStream getZipFileInputStream(String targetFName) throws FileNotFoundException {
         InputStream in = null;
-        System.out.println("targetFName : "+targetFName);
+        //System.out.println("targetFName : "+targetFName);
         Enumeration<? extends ZipEntry> enume  =  zipFile.entries();
         while( enume.hasMoreElements() ){
             ZipEntry entry = enume.nextElement();
-            System.out.println("entry.getName() : "+entry.getName());
+            //System.out.println("entry.getName() : "+entry.getName());
             if ( entry.getName().equals(targetFName) ) {
                 try {
                     in = zipFile.getInputStream(entry);

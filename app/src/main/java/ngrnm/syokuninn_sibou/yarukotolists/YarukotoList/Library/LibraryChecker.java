@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Checker;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.Checker;
 
 /**
  * Created by M.R on 2017/06/04.

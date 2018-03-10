@@ -18,18 +18,19 @@ import android.widget.Toast;
 
 import io.realm.Realm;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI_Wrapper;
 import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 import ngrnm.syokuninn_sibou.yarukotolists.R;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YCLIsBasePageFragment;
+import ngrnm.syokuninn_sibou.yarukotolists.YLIsBasePageFragment;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.Lists.ImageArrayAdapter;
 
 /**
  * Created by ryo on 2018/02/23.
  */
 
-public class YLsIsFragment extends YCLIsBasePageFragment {
+public class YLsIsFragment extends YLIsBasePageFragment {
     private int parentYL_id;
     
     /* 画面のセッティング */
@@ -79,15 +80,16 @@ public class YLsIsFragment extends YCLIsBasePageFragment {
                  *      ○ 各種時間
                  *      を読み込んで、編集できるようにする。
                  */
-                YLI selected_obj = adapter.get(pos);
+                int yLI_id = adapter.get(pos);
+                YLI_Wrapper yli = new YLI_Wrapper(realm, yLI_id);
                 
-                if ( ! selected_obj.isItem() ) {
+                if ( ! yli.isItem() ) {
                     /* List が選択された */
                     // やることリスト（編集）画面に移動
                     FragmentTransaction cft
                             = getParentFragment().getChildFragmentManager().beginTransaction();
                     YLsIsFragment yLsIs
-                            = YLsIsFragment.newInstance(selected_obj.getLI_id(), getArguments().getInt("hierarchy_num")+1);
+                            = YLsIsFragment.newInstance(yLI_id, getArguments().getInt("hierarchy_num")+1);
                     cft.replace(R.id.y_screen, yLsIs);
                     // 戻るボタンで戻ってこれるように
                     cft.addToBackStack(null);
@@ -96,7 +98,7 @@ public class YLsIsFragment extends YCLIsBasePageFragment {
                     /* Item が選択された */
                     // やることリスト（編集）画面に移動
                     Bundle bundle = new Bundle();
-                    bundle.putInt("itemID", selected_obj.getLI_id());
+                    bundle.putInt("itemID", yLI_id);
                     //bundle.putInt("hierarchy_num", getArguments().getInt("hierarchy_num")+1);
                     Intent intent = new Intent(getActivity(), YItemEditActivity.class);
                     intent.putExtras(bundle);
@@ -120,21 +122,20 @@ public class YLsIsFragment extends YCLIsBasePageFragment {
     
     
     @Override
-    protected String getSelectedItemTitle(int posi) {
-        return realm.where(YList.class).equalTo("id", parentYL_id).findFirst().getO_list().get(posi).getLI_title(realm);
+    protected String getSelectedLI_title(int posi) {
+        return new YLI_Wrapper(realm, adapter.get(posi)).getLI_title();
     }
-    
     @Override
-    protected void editListItem(int posi, String newTitle) {
-        final YLI yli = realm.where(YList.class).equalTo("id", parentYL_id).findFirst().getO_list().get(posi);
+    protected void renameListItem(int posi, String newTitle) {
+        YLI_Wrapper yli = new YLI_Wrapper(realm, adapter.get(posi));
         yli.setLI_title(realm, newTitle);
     }
-    
     @Override
     protected void removeListItem(int posi) {
         YList parentYlst = realm.where(YList.class).equalTo("id", parentYL_id).findFirst();
         parentYlst.rm_LI(realm, posi);
     }
+    
     
     protected void updateList() {
         final YList parentYList = realm.where(YList.class).equalTo("id", parentYL_id).findFirst();
@@ -251,44 +252,44 @@ public class YLsIsFragment extends YCLIsBasePageFragment {
     
     // List の 追加のみを行うメソッド。
     public void add_List(Realm realm, int posi, String listName) {
-        YList ylst_demo = new YList("List 0");
-        YList ylst_ORG = new YList(listName);
-        ylst_ORG.getLists().add(ylst_demo);  // 新しく作った方のリストだけ先に完成させる。
+        YPathTable ypTable_ORG = new YPathTable(false, parentYL_id);
+        YList ylst_ORG = new YList(listName, ypTable_ORG.getId());
     
         // Realmへオブジェクトをコピーします。
         realm.beginTransaction();
         // これ以降の変更は、返り値のオブジェクトに対して行う必要があります
-        YList ylst = realm.copyToRealm(ylst_ORG);
+        realm.copyToRealm(ypTable_ORG);
+        realm.copyToRealm(ylst_ORG);
         realm.commitTransaction();
-        
-        // 親 List (今いるところ) に、Item を追加。
-        YList parentYlst = realm.where(YList.class).equalTo("id", parentYL_id).findFirst();
-        if (parentYlst != null) {
-            parentYlst.add_List(realm, posi, ylst);
-        } else throw new IllegalStateException("親 List が取得できませんでした。");
-        
-        // order_list を更新
-        parentYlst.sortO(realm);
+    
+        addParent(realm, posi, ylst_ORG.getId());
     }
     
     // Item の 追加のみを行うメソッド。
     public void add_Item(Realm realm, int posi, String itemName) {
-        YItem yitm_ORG = new YItem(itemName);
+        YPathTable ypTable_ORG = new YPathTable(true, parentYL_id);
+        YItem yitm_ORG = new YItem(itemName, ypTable_ORG.getId());
     
         // Realmへオブジェクトをコピーします。
         realm.beginTransaction();
         // これ以降の変更は、返り値のオブジェクトに対して行う必要があります
-        YItem yitm = realm.copyToRealm(yitm_ORG);
+        realm.copyToRealm(ypTable_ORG);
+        realm.copyToRealm(yitm_ORG);
         realm.commitTransaction();
         
+        addParent(realm, posi, yitm_ORG.getId());
+    }
+    
+    private void addParent(Realm realm, int posi, int yLI_id) {
         // 親 List (今いるところ) に、Item を追加。
         YList parentYlst = realm.where(YList.class).equalTo("id", parentYL_id).findFirst();
         if (parentYlst != null) {
-            parentYlst.add_Item(realm, posi, yitm);
+            parentYlst.add_yLI(realm, posi, yLI_id);
         } else throw new IllegalStateException("親 List が取得できませんでした。");
-        
+    
         // order_list を更新
         parentYlst.sortO(realm);
     }
+    
     
 }

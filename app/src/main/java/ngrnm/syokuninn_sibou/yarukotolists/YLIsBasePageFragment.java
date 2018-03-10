@@ -14,17 +14,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import io.realm.Realm;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YLI_Wrapper;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.SettingMoldActivity;
-import ngrnm.syokuninn_sibou.yarukotolists.Utils.DeleteDialog;
-import ngrnm.syokuninn_sibou.yarukotolists.Utils.EditDialog;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.DeleteDialog;
+import ngrnm.syokuninn_sibou.yarukotolists.Utils.Dialogs.EditDialog;
 
 /**
  * Created by ryo on 2018/02/26.
  */
 
-public abstract class YCLIsBasePageFragment extends Fragment {
+public abstract class YLIsBasePageFragment extends Fragment {
     // 今のところ、これで問題なさそう。
     protected Realm realm = null;
     
@@ -54,11 +53,12 @@ public abstract class YCLIsBasePageFragment extends Fragment {
         switch (v.getId()) {
             case R.id.gridview:
                 GridView gv = (GridView) v;
-                title = ( (YCategory)gv.getItemAtPosition(adapterInfo.position) ).getTitle();
+//                title = ( (YCategory)gv.getItemAtPosition(adapterInfo.position) ).getTitle();
                 break;
             case R.id.listview:
                 ListView lv = (ListView) v;
-                title = ( (YLI)lv.getItemAtPosition(adapterInfo.position) ).getLI_title(realm);
+                int yLI_id = (Integer)lv.getItemAtPosition(adapterInfo.position);
+                title = new YLI_Wrapper(realm, yLI_id).getLI_title();
                 break;
         }
         menu.setHeaderTitle(title);
@@ -72,20 +72,20 @@ public abstract class YCLIsBasePageFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.listview_edit:
                 EditDialog E_dialog = new EditDialog();
-                E_dialog.setSelectedItemName(getSelectedItemTitle(posi), posi);
+                E_dialog.setSelectedItemName(getSelectedLI_title(posi), posi);
                 E_dialog.setTargetFragment(this, FLAGCODE_EDIT);
                 E_dialog.show(getFragmentManager(), "e_dialog");
                 return true;
             case R.id.listview_delete:
                 DeleteDialog D_dialog = new DeleteDialog();
-                D_dialog.setSelectedItemName(getSelectedItemTitle(posi), posi);
+                D_dialog.setSelectedItemName(getSelectedLI_title(posi), posi);
                 D_dialog.setTargetFragment(this, FLAGCODE_DELETE);
                 D_dialog.show(getFragmentManager(), "d_dialog");
                 return true;
         }
         return false;
     }
-    protected abstract String getSelectedItemTitle(int posi);
+    protected abstract String getSelectedLI_title(int posi);
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 指定したrequestCodeで戻ってくる
@@ -94,7 +94,7 @@ public abstract class YCLIsBasePageFragment extends Fragment {
                 if (resultCode == EditDialog.getRCode_OK()) {
                     int posi = data.getIntExtra("posi", -1);
                     String newTitle = data.getStringExtra("newTitle");
-                    editListItem(posi, newTitle);
+                    renameListItem(posi, newTitle);
                     updateList();
                 }
                 break;
@@ -109,7 +109,7 @@ public abstract class YCLIsBasePageFragment extends Fragment {
         }
     }
     
-    protected abstract void editListItem(int posi, String newTitle);
+    protected abstract void renameListItem(int posi, String newTitle);
     protected abstract void removeListItem(int posi);
     
     protected abstract void updateList();

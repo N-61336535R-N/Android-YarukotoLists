@@ -23,17 +23,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".YarukotoMainActivity"/>
-        <activity
-            android:name=".YarukotoList.YListerActivity"
+        <!--activity
+            android:name=".YarukotoList.旧.YListerActivity"
             android:label="やることリスト 一覧" >
         </activity>
         <activity
+            android:name=".YarukotoList.旧.YItemShowActivity"
+            android:label="[項目名]">
+        </activity-->
+        <activity
             android:name=".YarukotoList.YItemsActivity"
             android:label="[リスト名]" >
-        </activity>
-        <activity
-            android:name=".YarukotoList.YItemShowActivity"
-            android:label="[項目名]">
         </activity>
         <activity
             android:windowSoftInputMode="adjustResize"

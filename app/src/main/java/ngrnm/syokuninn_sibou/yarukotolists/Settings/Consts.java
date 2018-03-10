@@ -7,20 +7,21 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCtgryOrder;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YList;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YPathTable;
 
 public class Consts {
     private Consts() {}
     
     public static final String realmDBname = "YDB.realm";
-    public static final Class[] realmClasses = {YCategory.class};
-    public static final Class[] realmOrderClasses = {YCtgryOrder.class};
+    public static final Class[] realmClasses = {YList.class, YItem.class};
+    public static final Class[] realmOptClasses = {YPathTable.class};
     public static ArrayList<Class> realmAllClasses = new ArrayList<>();
     static {
         LinkedList<Class> tmpList = new LinkedList<>();
         tmpList.addAll(Arrays.asList(realmClasses));
-        tmpList.addAll(Arrays.asList(realmOrderClasses));
+        tmpList.addAll(Arrays.asList(realmOptClasses));
         realmAllClasses.addAll(tmpList);
     }
     
@@ -36,7 +37,19 @@ public class Consts {
     
     
     
-    
+    /**
+     * 仕様
+     * ○ primary key : id
+     *      ※ Realm のインデックス用。実際に使われることはまずない。
+     *      なので、Restore 時には心置きなく書き換えていい。というか、そもそもBackup に含めなくてもOK
+     *      パフォーマンス向上のためだけに用意する。
+     * 
+     * ○ unique key : path
+     *      primary key が後々変更できない
+     *      ※ Category も含めて、同じ階層内で同じ名前は許さないこととする。
+     *
+     * 
+     */
     
     
     

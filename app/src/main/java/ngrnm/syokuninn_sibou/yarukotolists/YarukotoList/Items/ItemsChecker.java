@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
-import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Checker;
 import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.Library.DirFile;
+import ngrnm.syokuninn_sibou.yarukotolists.YarukotoList.旧.Checker;
 
 import static ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts.libraryName;
 

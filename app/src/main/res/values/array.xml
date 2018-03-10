@@ -2,14 +2,16 @@
 <resources>
 
     <string-array name="entries_list_preference">
-        <item>インポート（スキップ）</item>
-        <item>インポート（上書き）</item>
-        <item>データベースの入れ替え</item>
+        <item>【追加】    Simple add</item>
+        <item>【選択追加】Select add</item>
+        <item>【入れ替え】Rollback</item>
+        <item>【入れ替え】Rollback(DB)</item>
     </string-array>
     <string-array name="entryvalues_list_preference">
-        <item>json-skip</item>
-        <item>json-update</item>
-        <item>realm</item>
+        <item>json-add</item>
+        <item>json-slectadd</item>
+        <item>json-rollback</item>
+        <item>realm-rollback</item>
     </string-array>
     
 </resources>  

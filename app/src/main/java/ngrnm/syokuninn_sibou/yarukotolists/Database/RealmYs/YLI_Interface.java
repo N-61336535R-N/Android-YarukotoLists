@@ -8,4 +8,7 @@ public interface YLI_Interface {
     
     String getTitle();
     String getImgName();
+    
+    void setTitle(String newTitle);
+    void setImgName(String newImgName);
 }

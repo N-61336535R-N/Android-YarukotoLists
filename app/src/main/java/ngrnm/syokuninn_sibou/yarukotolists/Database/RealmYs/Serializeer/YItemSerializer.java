@@ -1,4 +1,4 @@
-package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Utiles;
+package ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Serializeer;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -7,22 +7,26 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YCategory;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.YItem;
 
 /**
  * Created by ryo on 2018/03/04.
  */
 
-public class YCategorySerializer implements JsonSerializer<YCategory> {
+public class YItemSerializer implements JsonSerializer<YItem> {
     
     
     @Override
-    public JsonElement serialize(YCategory src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(YItem src, Type typeOfSrc, JsonSerializationContext context) {
         final JsonObject jsonObject = new JsonObject();
+        
         jsonObject.addProperty("id", src.getId());
         jsonObject.addProperty("title", src.getTitle());
         jsonObject.addProperty("imgName", src.getImgName());
-        jsonObject.addProperty("haveListID", src.getHaveListID());
+    
+        jsonObject.addProperty("txtGaiyou", src.getTxtGaiyou());
+        jsonObject.addProperty("txtSyousai", src.getTxtSyousai());
+        
         return jsonObject;
     }
     

@@ -15,17 +15,17 @@
             android:key="prefKey_goBackup"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="復元・Import">
+    <PreferenceCategory android:title="復元">
         <ListPreference
             android:title="復元モード"
             android:summary="：インポート（追加）"
             android:entries="@array/entries_list_preference"
             android:entryValues="@array/entryvalues_list_preference"
-            android:defaultValue="json-skip"
+            android:defaultValue="json-add"
             android:dialogTitle="ListPreference"
             android:key="prefkey_selectlist_restore_mode"/>
         <PreferenceScreen
-            android:title="インポート実行"
+            android:title="復元を実行"
             android:summary="インポートしたい zip ファイルを選択後、\n復元を実行します。"
             android:key="prefKey_goRestore"/>
     </PreferenceCategory>

@@ -1,6 +1,5 @@
 package ngrnm.syokuninn_sibou.yarukotolists.Database.BackupUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -17,8 +16,9 @@ import java.util.LinkedList;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Utiles.YCategorySerializer;
-import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Utiles.YCtgryOrderSerializer;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Serializeer.YItemSerializer;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Serializeer.YListSerializer;
+import ngrnm.syokuninn_sibou.yarukotolists.Database.RealmYs.Serializeer.YPathTableSerializer;
 import ngrnm.syokuninn_sibou.yarukotolists.Settings.Consts;
 
 /**
@@ -66,7 +66,7 @@ public class Backuper {
     }
     
     // クラスごとに1ファイルを作るイメージ。
-    private void convertRealmDBsToJSON() throws JsonProcessingException {
+    private void convertRealmDBsToJSON() {
         /* Realm の初期化 */
         // このスレッドのためのRealmインスタンスを取得
         Realm realm = Realm.getDefaultInstance();
@@ -85,8 +85,9 @@ public class Backuper {
                             return false;
                         }
                     })
-                    .registerTypeAdapter(Class.forName("io.realm.YCategoryRealmProxy"), new YCategorySerializer())
-                    .registerTypeAdapter(Class.forName("io.realm.YCtgryOrderRealmProxy"), new YCtgryOrderSerializer())
+                    .registerTypeAdapter(Class.forName("io.realm.YPathTableRealmProxy"), new YPathTableSerializer())
+                    .registerTypeAdapter(Class.forName("io.realm.YListRealmProxy"), new YListSerializer())
+                    .registerTypeAdapter(Class.forName("io.realm.YItemRealmProxy"), new YItemSerializer())
                     .create();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
